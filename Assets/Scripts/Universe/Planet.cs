@@ -6,11 +6,14 @@ namespace Universe
     {
         public Direction RotateTo = Direction.Right;
         public float AngularVelocity = 90f;
-        public float Radius = 1f;
-        public float ShrinkRate = 0.005f;
-        public float MinimumRadius = 0.1f;
-
         public enum Direction { Left = 1, Right = -1 }
+
+        [SerializeField]
+        float Radius = 1f;
+        [SerializeField]
+        float ShrinkRate = 0.005f;
+        [SerializeField]
+        float MinimumRadius = 0.1f;
 
         void Start()
         {
