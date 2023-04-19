@@ -23,22 +23,21 @@ namespace Universe
         void Update()
         {
             Rotate();
-            Shrink();
 
             if (ShouldDestroy())
                 Destroy(gameObject);
+        }
+
+        public void Shrink()
+        {
+            float scale = Mathf.Lerp(Radius, MinimumRadius, Time.time * ShrinkRate);
+            transform.localScale = new Vector2(scale, scale);
         }
 
         void Rotate()
         {
             float angle = Time.deltaTime * AngularVelocity * (int)RotateTo;
             transform.RotateAround(transform.position, transform.forward, angle);
-        }
-
-        void Shrink()
-        {
-            float scale = Mathf.Lerp(Radius, MinimumRadius, Time.time * ShrinkRate);
-            transform.localScale = new Vector2(scale, scale);
         }
 
         bool ShouldDestroy()
