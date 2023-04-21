@@ -4,24 +4,16 @@ using Universe;
 
 public class Frog : MonoBehaviour
 {
-    public float JumpForce = 5f;
+    [Header("Frog Behaviour Characteristics:")]
+    public float JumpForce;
+
+    [Space(20)]
+    [Header("Actions:")]
     public InputAction JumpAction;
 
     Planet LandedPlanet = null;
-    Rigidbody2D rb;
-
-    void Awake()
-    {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-        JumpAction.performed += OnJump;
-    }
-
-    void Update()
-    {
-        if (LandedPlanet != null)
-            LandedPlanet.Shrink();
-
-    }
+    Planet LastPlanet = null;
+    Rigidbody2D rigidBody;
 
     void OnEnable()
     {
@@ -33,18 +25,29 @@ public class Frog : MonoBehaviour
         JumpAction.Disable();
     }
 
+    void Awake()
+    {
+        rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        JumpAction.performed += OnJump;
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         other.gameObject.TryGetComponent<Planet>(out LandedPlanet);
 
         if (LandedPlanet != null)
         {
-            rb.velocity = Vector2.zero;
+            rigidBody.velocity = Vector2.zero;
 
-            Vector2 direction = (transform.position - LandedPlanet.transform.position).normalized;
+            if (LastPlanet != null)
+            {
+                LastPlanet.TryGetComponent<Collider2D>(out var collider2D);
+                collider2D.enabled = true;
+            }
+
+            Vector3 direction = (transform.position - LandedPlanet.transform.position).normalized;
             transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
-
-            transform.SetParent(LandedPlanet.transform);
+            this.transform.SetParent(LandedPlanet.transform, true);
         }
     }
 
@@ -54,15 +57,24 @@ public class Frog : MonoBehaviour
         {
             if (planet == LandedPlanet)
             {
+                this.transform.parent = null;
+                this.transform.localScale = Vector3.one;
+
+                planet.TryGetComponent<Collider2D>(out var collider2D);
+                collider2D.enabled = false;
+
+                LastPlanet = planet;
                 LandedPlanet = null;
-                transform.SetParent(null);
             }
         }
     }
 
     void OnJump(InputAction.CallbackContext ctx)
     {
-        rb.AddForce(transform.up * JumpForce);
+        // if (LandedPlanet != null)
+        // {
+        rigidBody.AddForce(transform.up * JumpForce);
+        //}
     }
 
 }

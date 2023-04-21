@@ -1,26 +1,37 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Universe
 {
     public class Planet : MonoBehaviour
     {
-        public Direction RotateTo = Direction.Right;
-        public float AngularVelocity = 90f;
-        public enum Direction { Left = 1, Right = -1 }
+        [Header("Planet Behaviour Characteristics:")]
+        public bool ShouldRandomizeData;
+        public int RotateDirection;
+        public float RotateVelocity;
+        public float PlanetSize;
+        private float MinSize = 0.1f;
+        public int ScaleTime;
 
-        [SerializeField]
-        float Radius = 1f;
-        [SerializeField]
-        float ShrinkRate = 0.005f;
-        [SerializeField]
-        float MinimumRadius = 0.1f;
+        [Space(20)]
 
-        void Start()
+        [Header("Planet Skins:")]
+        public List<Sprite> PlanetSkins;
+
+        private SpriteRenderer spriteRenderer;
+        private Frog frog;
+
+        private void Awake()
         {
-            transform.localScale = Vector3.one * Radius;
+            this.TryGetComponent<SpriteRenderer>(out spriteRenderer);
         }
 
-        void Update()
+        private void Start()
+        {
+            SetPlanet();
+        }
+
+        private void Update()
         {
             Rotate();
 
@@ -28,22 +39,68 @@ namespace Universe
                 Destroy(gameObject);
         }
 
-        public void Shrink()
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            float scale = Mathf.Lerp(Radius, MinimumRadius, Time.time * ShrinkRate);
-            transform.localScale = new Vector2(scale, scale);
+            other.gameObject.TryGetComponent<Frog>(out frog);
+
+            if (frog != null)
+            {
+                StopAllCoroutines();
+                StartCoroutine(ChangeScaleOverTime(Vector2.zero, ScaleTime));
+            }
         }
 
-        void Rotate()
+        private void OnTriggerExit2D(Collider2D other)
         {
-            float angle = Time.deltaTime * AngularVelocity * (int)RotateTo;
+            other.gameObject.TryGetComponent<Frog>(out frog);
+
+            if (frog != null)
+            {
+                frog = null;
+                StopAllCoroutines();
+                StartCoroutine(ChangeScaleOverTime(Vector2.one * PlanetSize, ScaleTime));
+            }
+        }
+
+        private void SetPlanet()
+        {
+            if (ShouldRandomizeData == true)
+            {
+                spriteRenderer.sprite = PlanetSkins[Random.Range(0, PlanetSkins.Count - 1)];
+                PlanetSize = Random.Range(1f, 3.5f);
+                RotateDirection = Mathf.Sign(Random.Range(-1.0f, 1.0f)) == -1 ? -1 : 1;
+                RotateVelocity = Random.Range(90f, 180f);
+                ScaleTime = Random.Range(1, 10);
+            }
+
+            transform.localScale = Vector3.one * PlanetSize;
+        }
+
+        private void Rotate()
+        {
+            float angle = Time.deltaTime * RotateVelocity * RotateDirection;
             transform.RotateAround(transform.position, transform.forward, angle);
         }
 
-        bool ShouldDestroy()
+        private bool ShouldDestroy()
         {
-            Vector2 scale = transform.localScale;
-            return scale.x == MinimumRadius && scale.y == MinimumRadius;
+            return transform.localScale.x <= MinSize && transform.localScale.y <= MinSize;
+        }
+
+        IEnumerator<float?> ChangeScaleOverTime(Vector3 scale, float time)
+        {
+            float progress = 0;
+            float rate = 1 / time;
+
+            Vector3 fromScale = transform.localScale;
+            Vector3 toScale = scale;
+
+            while (progress < 1)
+            {
+                progress += Time.deltaTime * rate;
+                transform.localScale = Vector3.Lerp(fromScale, toScale, progress);
+                yield return null;
+            }
         }
     }
 }
