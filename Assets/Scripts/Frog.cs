@@ -41,13 +41,14 @@ public class Frog : MonoBehaviour
 
             if (LastPlanet != null)
             {
-                LastPlanet.TryGetComponent<Collider2D>(out var collider2D);
+                LastPlanet.TryGetComponent<CircleCollider2D>(out var collider2D);
                 collider2D.enabled = true;
             }
 
+            this.transform.SetParent(LandedPlanet.transform, true);
+
             Vector3 direction = (transform.position - LandedPlanet.transform.position).normalized;
             transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
-            this.transform.SetParent(LandedPlanet.transform, true);
         }
     }
 
@@ -55,17 +56,14 @@ public class Frog : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent<Planet>(out Planet planet))
         {
-            if (planet == LandedPlanet)
-            {
-                this.transform.parent = null;
-                this.transform.localScale = Vector3.one;
+            this.transform.parent = null;
+            this.transform.localScale = Vector3.one;
 
-                planet.TryGetComponent<Collider2D>(out var collider2D);
-                collider2D.enabled = false;
+            planet.TryGetComponent<CircleCollider2D>(out var collider2D);
+            collider2D.enabled = false;
 
-                LastPlanet = planet;
-                LandedPlanet = null;
-            }
+            LastPlanet = planet;
+            LandedPlanet = null;
         }
     }
 
