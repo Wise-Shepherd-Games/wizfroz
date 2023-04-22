@@ -1,5 +1,7 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Universe
 {
@@ -12,6 +14,8 @@ namespace Universe
         public float PlanetSize;
         private float MinSize = 0.1f;
         public int ScaleTime;
+        public int NumberOfObstacles = 3;
+        [SerializeField] private PlanetType type;
 
         [Space(20)]
 
@@ -21,14 +25,23 @@ namespace Universe
         private SpriteRenderer spriteRenderer;
         private Frog frog;
 
+        private enum PlanetType
+        {
+            Water = 0,
+            Earth = 1,
+            Fire = 2,
+            Air = 3
+        }
+
         private void Awake()
         {
             this.TryGetComponent<SpriteRenderer>(out spriteRenderer);
+            SetPlanet();
         }
 
         private void Start()
         {
-            SetPlanet();
+            InstantiateObstacles();
         }
 
         private void Update()
@@ -66,7 +79,9 @@ namespace Universe
         {
             if (ShouldRandomizeData == true)
             {
-                spriteRenderer.sprite = PlanetSkins[Random.Range(0, PlanetSkins.Count - 1)];
+                int _type = Random.Range(0, PlanetSkins.Count - 1);
+                type = (PlanetType)_type;
+                spriteRenderer.sprite = PlanetSkins[_type];
                 PlanetSize = Random.Range(1f, 3.5f);
                 RotateDirection = Mathf.Sign(Random.Range(-1.0f, 1.0f)) == -1 ? -1 : 1;
                 RotateVelocity = Random.Range(90f, 180f);
@@ -100,6 +115,22 @@ namespace Universe
                 progress += Time.deltaTime * rate;
                 transform.localScale = Vector3.Lerp(fromScale, toScale, progress);
                 yield return null;
+            }
+        }
+
+        void InstantiateObstacles()
+        {
+            Vector2 center = this.gameObject.transform.position;
+
+            for (int i = 0; i < NumberOfObstacles; i++)
+            {
+                GameObject newGameObject = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                float angle = i * Mathf.PI * 2f / NumberOfObstacles;
+                float x = Mathf.Cos(angle) * (PlanetSize - 0.5f);
+                float y = Mathf.Sin(angle) * (PlanetSize - 0.5f);
+                Vector2 point = new Vector2(x, y) + center;
+                newGameObject.transform.position = new Vector3(point.x, point.y, 1);
+                newGameObject.transform.parent = this.gameObject.transform;
             }
         }
     }
