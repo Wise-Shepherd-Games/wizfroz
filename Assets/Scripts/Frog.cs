@@ -14,6 +14,7 @@ public class Frog : MonoBehaviour
     Planet LandedPlanet = null;
     Planet LastPlanet = null;
     Rigidbody2D rigidBody;
+    [SerializeField] private ParticleSystem JumpParticle;
 
     void OnEnable()
     {
@@ -29,6 +30,7 @@ public class Frog : MonoBehaviour
     {
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         JumpAction.performed += OnJump;
+        JumpParticle.Stop();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -44,7 +46,8 @@ public class Frog : MonoBehaviour
                 LastPlanet.TryGetComponent<CircleCollider2D>(out var collider2D);
                 collider2D.enabled = true;
             }
-
+            JumpParticle.Clear();
+            JumpParticle.Stop();
             this.transform.SetParent(LandedPlanet.transform, true);
 
             Vector3 direction = (transform.position - LandedPlanet.transform.position).normalized;
@@ -72,6 +75,7 @@ public class Frog : MonoBehaviour
         // if (LandedPlanet != null)
         // {
         rigidBody.AddForce(transform.up * JumpForce);
+        JumpParticle.Play();
         //}
     }
 
