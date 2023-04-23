@@ -1,6 +1,7 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 using Random = UnityEngine.Random;
 
 namespace Universe
@@ -87,7 +88,7 @@ namespace Universe
                 RotateDirection = Mathf.Sign(Random.Range(-1.0f, 1.0f)) == -1 ? -1 : 1;
                 RotateVelocity = Random.Range(90f, 180f);
                 ScaleTime = Random.Range(3, 11);
-                NumberOfObstacles = Random.Range(2, 5);
+                NumberOfObstacles = Random.Range(2, 4);
             }
 
             transform.localScale = Vector3.one * PlanetSize;
@@ -104,7 +105,7 @@ namespace Universe
             return transform.localScale.x <= MinSize && transform.localScale.y <= MinSize;
         }
 
-        IEnumerator<float?> ChangeScaleOverTime(Vector3 scale, float time)
+        private IEnumerator ChangeScaleOverTime(Vector3 scale, float time)
         {
             float progress = 0;
             float rate = 1 / time;

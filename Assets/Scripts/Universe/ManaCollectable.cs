@@ -7,6 +7,7 @@ public class ManaCollectable : Collectable
 
     public override void ActOnEnter(Frog f)
     {
+        particle.Play();
         f.Mana += ManaGivenOnCollision;
     }
 

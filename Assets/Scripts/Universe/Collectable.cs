@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public abstract class Collectable : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public abstract class Collectable : MonoBehaviour
 
     public ParticleSystem particle;
 
-    void Awake()
+    private void Awake()
     {
         this.TryGetComponent<SpriteRenderer>(out spriteRenderer);
     }
@@ -18,6 +19,7 @@ public abstract class Collectable : MonoBehaviour
         {
             this.spriteRenderer.hideFlags = HideFlags.None;
             this.spriteRenderer.color = new Color(0, 0, 0, 0);
+            StopAllCoroutines();
             ActOnEnter(player);
         }
 
@@ -44,5 +46,4 @@ public abstract class Collectable : MonoBehaviour
 
         ActOnExit(f);
     }
-
 }
