@@ -86,8 +86,8 @@ namespace Universe
                 PlanetSize = Random.Range(1f, 3.5f);
                 RotateDirection = Mathf.Sign(Random.Range(-1.0f, 1.0f)) == -1 ? -1 : 1;
                 RotateVelocity = Random.Range(90f, 180f);
-                ScaleTime = Random.Range(3, 10);
-                NumberOfObstacles = Random.Range(2, 3);
+                ScaleTime = Random.Range(3, 11);
+                NumberOfObstacles = Random.Range(2, 5);
             }
 
             transform.localScale = Vector3.one * PlanetSize;

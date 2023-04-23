@@ -16,6 +16,12 @@ public class Frog : MonoBehaviour
     Rigidbody2D rigidBody;
     [SerializeField] private ParticleSystem JumpParticle;
 
+
+    [Space(20)]
+    [Header("Stats:")]
+    public float Mana = 0;
+    public float OctobearTrophies = 0;
+
     void OnEnable()
     {
         JumpAction.Enable();
