@@ -5517,6 +5517,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1477534640}
   - component: {fileID: 1477534641}
+  - component: {fileID: 1477534642}
   m_Layer: 0
   m_Name: Frog_Boot_Right
   m_TagString: Untagged
@@ -5531,14 +5532,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477534639}
-  m_LocalRotation: {x: 0, y: -0, z: 0, w: -1}
-  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1951726909}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -360}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1477534641
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5591,6 +5592,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1477534642
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477534639}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9cb15bd7922109847a1267500bd14042, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1616520899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5967,6 +5989,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2137474652}
   - component: {fileID: 2137474653}
+  - component: {fileID: 2137474654}
   m_Layer: 0
   m_Name: Frog_Boot_Left
   m_TagString: Untagged
@@ -5981,14 +6004,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2137474651}
-  m_LocalRotation: {x: 0, y: -0, z: 0, w: -1}
-  m_LocalPosition: {x: 0, y: 0.01, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.03, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1951726909}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 360}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2137474653
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6041,6 +6064,27 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &2137474654
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2137474651}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7806ba0500d4b884cbb5cf876268dc3a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &6958138020062148074
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6051,6 +6095,18 @@ PrefabInstance:
     - target: {fileID: 6958138020297854048, guid: 1379943708dc68948aef1bf8c47fb957, type: 3}
       propertyPath: m_Name
       value: Planet
+      objectReference: {fileID: 0}
+    - target: {fileID: 6958138020297854049, guid: 1379943708dc68948aef1bf8c47fb957, type: 3}
+      propertyPath: type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6958138020297854049, guid: 1379943708dc68948aef1bf8c47fb957, type: 3}
+      propertyPath: PlanetSize
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6958138020297854049, guid: 1379943708dc68948aef1bf8c47fb957, type: 3}
+      propertyPath: ShouldRandomizeData
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6958138020297854054, guid: 1379943708dc68948aef1bf8c47fb957, type: 3}
       propertyPath: m_SortingOrder

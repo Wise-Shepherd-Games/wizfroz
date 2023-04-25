@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Universe;
@@ -14,8 +15,10 @@ public class Frog : MonoBehaviour
     Planet LandedPlanet = null;
     Planet LastPlanet = null;
     Rigidbody2D rigidBody;
-    [SerializeField] private ParticleSystem JumpParticle;
 
+    [Space(20)]
+    [Header("Effects and More:")]
+    [SerializeField] private ParticleSystem JumpParticle;
 
     [Space(20)]
     [Header("Stats:")]
@@ -37,6 +40,10 @@ public class Frog : MonoBehaviour
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         JumpAction.performed += OnJump;
         JumpParticle.Stop();
+    }
+
+    private void Update()
+    {
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -84,5 +91,4 @@ public class Frog : MonoBehaviour
         JumpParticle.Play();
         //}
     }
-
 }

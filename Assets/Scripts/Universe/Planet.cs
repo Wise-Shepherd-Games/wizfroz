@@ -83,7 +83,6 @@ namespace Universe
             {
                 int _type = Random.Range(0, PlanetSkins.Count);
                 type = (PlanetType)_type;
-                spriteRenderer.sprite = PlanetSkins[_type];
                 PlanetSize = Random.Range(1f, 3.5f);
                 RotateDirection = Mathf.Sign(Random.Range(-1.0f, 1.0f)) == -1 ? -1 : 1;
                 RotateVelocity = Random.Range(90f, 180f);
@@ -91,6 +90,7 @@ namespace Universe
                 NumberOfObstacles = Random.Range(2, 4);
             }
 
+            spriteRenderer.sprite = PlanetSkins[(int)type];
             transform.localScale = Vector3.one * PlanetSize;
         }
 
