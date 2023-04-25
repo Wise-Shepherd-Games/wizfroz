@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Universe;
@@ -11,7 +10,7 @@ public class Frog : MonoBehaviour
     [Space(20)]
     [Header("Actions:")]
     public InputAction JumpAction;
-
+    [SerializeField] float MaxSecondsFloating = 3f;
     Planet LandedPlanet = null;
     Planet LastPlanet = null;
     Rigidbody2D rigidBody;
@@ -52,6 +51,7 @@ public class Frog : MonoBehaviour
 
         if (LandedPlanet != null)
         {
+            CancelInvoke("Die");
             rigidBody.velocity = Vector2.zero;
 
             if (LastPlanet != null)
@@ -91,10 +91,8 @@ public class Frog : MonoBehaviour
 
     void OnJump(InputAction.CallbackContext ctx)
     {
-        // if (LandedPlanet != null)
-        // {
+        Invoke("Die", MaxSecondsFloating);
         rigidBody.AddForce(transform.up * JumpForce);
         JumpParticle.Play();
-        //}
     }
 }
