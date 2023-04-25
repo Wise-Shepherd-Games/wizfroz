@@ -1,0 +1,9 @@
+.button {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    flex-grow: 0;
+    flex-direction: column;
+    font-size: 18px;
+}

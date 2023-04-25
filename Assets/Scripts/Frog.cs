@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+using UnityEngine.SceneManagement;
 using Universe;
 
 public class Frog : MonoBehaviour
@@ -18,11 +20,26 @@ public class Frog : MonoBehaviour
     [Space(20)]
     [Header("Effects and More:")]
     [SerializeField] private ParticleSystem JumpParticle;
+    [SerializeField] UIDocument deathScreenUI;
+    GameObject deathScreenGameObject;
 
     [Space(20)]
     [Header("Stats:")]
     public float Mana = 0;
     public float OctobearTrophies = 0;
+
+    void Awake()
+    {
+        rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        JumpAction.performed += OnJump;
+        JumpParticle.Stop();
+
+        VisualElement rootElement = deathScreenUI.rootVisualElement;
+        rootElement.Q<Button>("RestartBtn").clicked += OnRestartClicked;
+        rootElement.Q<Button>("HomeBtn").clicked += OnHomeClicked;
+        rootElement.Q<Button>("NextBtn").clicked += OnNextClicked;
+        rootElement.style.visibility = Visibility.Hidden;
+    }
 
     void OnEnable()
     {
@@ -32,17 +49,6 @@ public class Frog : MonoBehaviour
     void OnDisable()
     {
         JumpAction.Disable();
-    }
-
-    void Awake()
-    {
-        rigidBody = gameObject.GetComponent<Rigidbody2D>();
-        JumpAction.performed += OnJump;
-        JumpParticle.Stop();
-    }
-
-    private void Update()
-    {
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -85,8 +91,8 @@ public class Frog : MonoBehaviour
 
     public void Die()
     {
+        deathScreenUI.rootVisualElement.style.visibility = Visibility.Visible;
         Destroy(gameObject);
-        // TODO -> CALL UI EVENTS
     }
 
     void OnJump(InputAction.CallbackContext ctx)
@@ -94,5 +100,20 @@ public class Frog : MonoBehaviour
         Invoke("Die", MaxSecondsFloating);
         rigidBody.AddForce(transform.up * JumpForce);
         JumpParticle.Play();
+    }
+
+    void OnRestartClicked()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void OnHomeClicked()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void OnNextClicked()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
