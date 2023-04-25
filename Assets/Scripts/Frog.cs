@@ -83,6 +83,12 @@ public class Frog : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        Destroy(gameObject);
+        // TODO -> CALL UI EVENTS
+    }
+
     void OnJump(InputAction.CallbackContext ctx)
     {
         // if (LandedPlanet != null)

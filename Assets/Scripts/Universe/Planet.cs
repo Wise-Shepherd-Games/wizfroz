@@ -51,7 +51,10 @@ namespace Universe
             Rotate();
 
             if (ShouldDestroy())
+            {
                 Destroy(gameObject);
+                if (frog) frog.Die();
+            }
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -71,7 +74,7 @@ namespace Universe
 
             if (frog != null)
             {
-                frog = null;
+                if (!ShouldDestroy()) frog = null;
                 StopAllCoroutines();
                 StartCoroutine(ChangeScaleOverTime(Vector2.one * PlanetSize, ScaleTime));
             }
@@ -84,7 +87,7 @@ namespace Universe
                 int _type = Random.Range(0, PlanetSkins.Count);
                 type = (PlanetType)_type;
                 PlanetSize = Random.Range(1f, 3.5f);
-                RotateDirection = Mathf.Sign(Random.Range(-1.0f, 1.0f)) == -1 ? -1 : 1;
+                RotateDirection = (int)Mathf.Sign(Random.Range(-1.0f, 1.0f));
                 RotateVelocity = Random.Range(90f, 180f);
                 ScaleTime = Random.Range(3, 11);
                 NumberOfObstacles = Random.Range(2, 4);
