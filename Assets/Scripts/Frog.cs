@@ -72,6 +72,11 @@ public class Frog : MonoBehaviour
             Vector3 direction = (transform.position - LandedPlanet.transform.position).normalized;
             transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
         }
+
+        if (other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Enemy")
+        {
+            Die();
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -109,11 +114,11 @@ public class Frog : MonoBehaviour
 
     void OnHomeClicked()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
     }
 
     void OnNextClicked()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
     }
 }

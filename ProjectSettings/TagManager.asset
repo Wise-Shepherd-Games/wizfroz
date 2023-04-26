@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Planet
   - Collectable
+  - Obstacle
+  - Enemy
   layers:
   - Default
   - TransparentFX
