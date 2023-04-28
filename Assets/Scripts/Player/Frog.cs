@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
 using Universe;
-using System.Linq;
 
 namespace Player
 {
@@ -19,7 +18,6 @@ namespace Player
         [Space(20)]
         [Header("Actions:")]
         public InputAction JumpAction;
-        public InputAction CastInvisibleSpellAction;
 
         [Space(20)]
         [Header("Components")]
@@ -38,7 +36,7 @@ namespace Player
         [Header("Stats and More:")]
         public float Mana = 0;
         public float OctobearTrophies = 0;
-        public bool IsInvisible = false;
+        public bool HasSpellActive = false;
         public List<Spell> Spells;
         Planet LandedPlanet = null;
         Planet LastPlanet = null;
@@ -47,8 +45,10 @@ namespace Player
         {
             rigidBody = gameObject.GetComponent<Rigidbody2D>();
             JumpAction.performed += OnJump;
-            CastInvisibleSpellAction.performed += OnCastInvisibleSpell;
             jumpParticle.Stop();
+
+            // THIS IS EXPLODING AND I DO NOT KNOW WHYYYYYYYYYYY :ccccccccccccccccccccccccccccccccccccccccccccc
+            Spells.ForEach((s) => s.inputAction.performed += (ctx) => s.Act(this));
 
             VisualElement rootElement = deathScreenUI.rootVisualElement;
             rootElement.Q<Button>("RestartBtn").clicked += OnRestartClicked;
@@ -60,13 +60,13 @@ namespace Player
         private void OnEnable()
         {
             JumpAction.Enable();
-            CastInvisibleSpellAction.Enable();
+            Spells.ForEach((s) => s.inputAction.Enable());
         }
 
         private void OnDisable()
         {
             JumpAction.Disable();
-            CastInvisibleSpellAction.Disable();
+            Spells.ForEach((s) => s.inputAction.Disable());
         }
 
 
@@ -92,7 +92,7 @@ namespace Player
                 transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
             }
 
-            if ((other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Enemy") && IsInvisible == false)
+            if ((other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Enemy") && HasSpellActive == false)
             {
                 Die();
             }
@@ -126,19 +126,6 @@ namespace Player
             jumpParticle.Play();
         }
 
-        private void OnCastInvisibleSpell(InputAction.CallbackContext ctx)
-        {
-            if (Mana != 0 && IsInvisible == false)
-            {
-                var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.Invisible).FirstOrDefault();
-
-                if (spell.ManaCost > Mana) return;
-
-                Mana -= spell.ManaCost;
-
-                spell.Act(this.gameObject);
-            }
-        }
 
         private void ResetScale()
         {

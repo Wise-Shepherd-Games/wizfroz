@@ -132,7 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 118988132}
-  - component: {fileID: 118988131}
+  - component: {fileID: 118988133}
   m_Layer: 0
   m_Name: Waypoints
   m_TagString: Untagged
@@ -140,24 +140,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &118988131
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 118988130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b734fff21b0c00a45a5a16f825e207a9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Waypoints:
-  - {fileID: 690264212}
-  - {fileID: 197614859}
-  - {fileID: 776266711}
-  - {fileID: 1060222254}
-  - {fileID: 1488269775}
 --- !u!4 &118988132
 Transform:
   m_ObjectHideFlags: 0
@@ -178,6 +160,24 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &118988133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 118988130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 294d2b6d2b2614fd28404f20b7dc4c18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Waypoints:
+  - {fileID: 690264212}
+  - {fileID: 197614859}
+  - {fileID: 776266711}
+  - {fileID: 1060222254}
+  - {fileID: 1488269775}
 --- !u!1001 &197614858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1351,6 +1351,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3381998510817899847, guid: 2447f1cc9814b1a49ba2b3a1432bfda8, type: 3}
+      propertyPath: pathway
+      value: 
+      objectReference: {fileID: 118988133}
     - target: {fileID: 6606650155545879376, guid: 2447f1cc9814b1a49ba2b3a1432bfda8, type: 3}
       propertyPath: m_Name
       value: EnemyShip
@@ -1399,10 +1403,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6606650155545879388, guid: 2447f1cc9814b1a49ba2b3a1432bfda8, type: 3}
-      propertyPath: pathway
-      value: 
-      objectReference: {fileID: 118988131}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2447f1cc9814b1a49ba2b3a1432bfda8, type: 3}
 --- !u!1001 &6958138020062148074
@@ -1438,7 +1438,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6958138020297854055, guid: 1379943708dc68948aef1bf8c47fb957, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.91
+      value: -0.08
       objectReference: {fileID: 0}
     - target: {fileID: 6958138020297854055, guid: 1379943708dc68948aef1bf8c47fb957, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1485,6 +1485,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2457415223537644560, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: deathScreenUI
+      value: 
+      objectReference: {fileID: 1852573948}
+    - target: {fileID: 2457415223537644560, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: Spells.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 44a3531194e7019fabd2e0168c8628ac, type: 2}
     - target: {fileID: 9216478239913388307, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
       propertyPath: m_RootOrder
       value: 1

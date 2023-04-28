@@ -1,9 +1,9 @@
 using System.Collections;
-
 using UnityEngine;
 
 namespace Player
 {
+    [CreateAssetMenu(fileName = "InvisibilitySpell", menuName = "Spell/Invisibility", order = 1)]
     public class InvisibleSpell : Spell
     {
         private const float ALPHA_VALUE_STARTS_AT = 0.3f;
@@ -11,23 +11,16 @@ namespace Player
         private float countdown = 0f;
         private float frag;
 
-        public InvisibleSpell() : base(SpellTypes.Invisible) { }
-
-        public override void Action(GameObject target)
+        protected override void HandleAction(Frog frog)
         {
-            target.TryGetComponent<Frog>(out var frog);
-
-            if (frog != null)
-            {
-                countdown = 0f;
-                frog.IsInvisible = true;
-                var color = frog.SpriteRenderer.material.color;
-                frog.SpriteRenderer.material.color = new Color(color.r, color.g, color.b, ALPHA_VALUE_STARTS_AT);
-                frog.LeftFootSpriteRenderer.material.color = new Color(color.r, color.g, color.b, ALPHA_VALUE_STARTS_AT);
-                frog.RightFootSpriteRenderer.material.color = new Color(color.r, color.g, color.b, ALPHA_VALUE_STARTS_AT);
-                this.frag = ALPHA_VALUE_STARTS_AT / InvisibilityDuration;
-                StartCoroutine(CountdownInvisible(frog));
-            }
+            countdown = 0f;
+            frog.HasSpellActive = true;
+            var color = frog.SpriteRenderer.material.color;
+            frog.SpriteRenderer.material.color = new Color(color.r, color.g, color.b, ALPHA_VALUE_STARTS_AT);
+            frog.LeftFootSpriteRenderer.material.color = new Color(color.r, color.g, color.b, ALPHA_VALUE_STARTS_AT);
+            frog.RightFootSpriteRenderer.material.color = new Color(color.r, color.g, color.b, ALPHA_VALUE_STARTS_AT);
+            this.frag = ALPHA_VALUE_STARTS_AT / InvisibilityDuration;
+            frog.StartCoroutine(CountdownInvisible(frog));
         }
 
         IEnumerator CountdownInvisible(Frog frog)
@@ -47,7 +40,7 @@ namespace Player
             frog.SpriteRenderer.material.color = Color.white;
             frog.LeftFootSpriteRenderer.material.color = Color.white;
             frog.RightFootSpriteRenderer.material.color = Color.white;
-            frog.IsInvisible = false;
+            frog.HasSpellActive = false;
         }
     }
 }
