@@ -4888,7 +4888,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1395704217158561753}
-  - component: {fileID: 1395704217158561752}
+  - component: {fileID: 6249449680430735297}
   m_Layer: 0
   m_Name: InvisibleSpell
   m_TagString: Untagged
@@ -4912,7 +4912,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1395704217158561752
+--- !u!114 &6249449680430735297
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4921,7 +4921,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1395704217158561755}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e342726e021925c4f93d4b0f0ed2f2f2, type: 3}
+  m_Script: {fileID: 11500000, guid: ea7bf8a0577de1e97be4401f9df42ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ManaCost: 15

@@ -4822,7 +4822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9216478239913388307}
   - component: {fileID: 9216478239913388306}
-  - component: {fileID: 9216478239913388309}
+  - component: {fileID: 2457415223537644560}
   - component: {fileID: 9216478239913388305}
   - component: {fileID: 9216478239913388398}
   m_Layer: 8
@@ -4903,7 +4903,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9216478239913388309
+--- !u!114 &2457415223537644560
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4912,7 +4912,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 9216478239913388308}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbb1d3eaab6f68447a2daa4d0d068f6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 528676c2ee412a48ebf0a0f3c72debd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   JumpForce: 500
@@ -4960,7 +4960,7 @@ MonoBehaviour:
   OctobearTrophies: 0
   IsInvisible: 0
   Spells:
-  - {fileID: 7834305911324345296}
+  - {fileID: 2980542373504463817}
 --- !u!50 &9216478239913388305
 Rigidbody2D:
   serializedVersion: 4
@@ -5375,15 +5375,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4637f217c54ffac49bcd41cd3cc67dfa, type: 3}
---- !u!114 &7834305911324345296 stripped
+--- !u!114 &2980542373504463817 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1395704217158561752, guid: 4637f217c54ffac49bcd41cd3cc67dfa, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6249449680430735297, guid: 4637f217c54ffac49bcd41cd3cc67dfa, type: 3}
   m_PrefabInstance: {fileID: 9216478239902084104}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e342726e021925c4f93d4b0f0ed2f2f2, type: 3}
+  m_Script: {fileID: 11500000, guid: ea7bf8a0577de1e97be4401f9df42ca1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &7834305911324345297 stripped

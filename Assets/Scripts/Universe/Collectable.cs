@@ -1,5 +1,5 @@
 using System.Collections;
-
+using Player;
 using UnityEngine;
 
 public abstract class Collectable : MonoBehaviour

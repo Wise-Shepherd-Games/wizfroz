@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6606650155545879379}
   - component: {fileID: 6606650155545879389}
   - component: {fileID: 6606650155545879378}
-  - component: {fileID: 6606650155545879388}
   - component: {fileID: 6606650155545879391}
+  - component: {fileID: 3381998510817899847}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: Enemy
@@ -110,23 +110,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6606650155545879388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6606650155545879376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbf9e6965ce2ba44a8e690fbd8ec389e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathway: {fileID: 0}
-  speed: 2.5
-  rotateSpeed: 4.5
-  sightRadius: 2
-  SightCircle: {fileID: 6606650157145987861}
 --- !u!58 &6606650155545879391
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -143,6 +126,23 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2
+--- !u!114 &3381998510817899847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6606650155545879376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7560b44512df95a34a4bb887a50d52ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathway: {fileID: 0}
+  speed: 2.5
+  rotateSpeed: 4.5
+  sightRadius: 2
+  SightCircle: {fileID: 6606650157145987861}
 --- !u!1 &6606650156824469683
 GameObject:
   m_ObjectHideFlags: 0
