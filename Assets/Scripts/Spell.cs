@@ -8,7 +8,8 @@ public abstract class Spell : MonoBehaviour
     public ParticleSystem particle;
     public enum SpellTypes
     {
-        Invisible
+        Invisible,
+        MovePlanet
     }
 
     public Spell(SpellTypes type)

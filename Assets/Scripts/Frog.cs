@@ -18,6 +18,7 @@ public class Frog : MonoBehaviour
     [Header("Actions:")]
     public InputAction JumpAction;
     public InputAction CastInvisibleSpellAction;
+    public InputAction CastMovePlanetSpellAction;
 
     [Space(20)]
     [Header("Components")]
@@ -38,7 +39,7 @@ public class Frog : MonoBehaviour
     public float OctobearTrophies = 0;
     public bool IsInvisible = false;
     public List<Spell> Spells;
-    Planet LandedPlanet = null;
+    public Planet LandedPlanet = null;
     Planet LastPlanet = null;
 
     private void Awake()
@@ -46,6 +47,7 @@ public class Frog : MonoBehaviour
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         JumpAction.performed += OnJump;
         CastInvisibleSpellAction.performed += OnCastInvisibleSpell;
+        CastMovePlanetSpellAction.performed += OnCastMovePlanetSpell;
         jumpParticle.Stop();
 
         VisualElement rootElement = deathScreenUI.rootVisualElement;
@@ -59,12 +61,14 @@ public class Frog : MonoBehaviour
     {
         JumpAction.Enable();
         CastInvisibleSpellAction.Enable();
+        CastMovePlanetSpellAction.Enable();
     }
 
     private void OnDisable()
     {
         JumpAction.Disable();
         CastInvisibleSpellAction.Disable();
+        CastMovePlanetSpellAction.Disable();
     }
 
 
@@ -129,6 +133,20 @@ public class Frog : MonoBehaviour
         if (Mana != 0 && IsInvisible == false)
         {
             var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.Invisible).FirstOrDefault();
+
+            if (spell.ManaCost > Mana) return;
+
+            Mana -= spell.ManaCost;
+
+            spell.Act(this.gameObject);
+        }
+    }
+
+    private void OnCastMovePlanetSpell(InputAction.CallbackContext ctx)
+    {
+        if (Mana != 0)
+        {
+            var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.MovePlanet).FirstOrDefault();
 
             if (spell.ManaCost > Mana) return;
 

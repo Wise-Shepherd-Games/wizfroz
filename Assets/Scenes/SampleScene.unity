@@ -1534,10 +1534,6 @@ PrefabInstance:
       value: Frog
       objectReference: {fileID: 0}
     - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
-      propertyPath: Mana
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
       propertyPath: deathScreenUI
       value: 
       objectReference: {fileID: 1852573948}
