@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,7 +7,7 @@ using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
 
 using Universe;
-using System.Linq;
+using Spells;
 
 public class Frog : MonoBehaviour
 {
@@ -18,7 +19,8 @@ public class Frog : MonoBehaviour
     [Header("Actions:")]
     public InputAction JumpAction;
     public InputAction CastInvisibleSpellAction;
-    public InputAction CastMovePlanetSpellAction;
+    public InputAction CastChangePlanetDirectionAction;
+    public InputAction CastSlowDownPlanetSpellAction;
 
     [Space(20)]
     [Header("Components")]
@@ -46,14 +48,14 @@ public class Frog : MonoBehaviour
     {
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
         JumpAction.performed += OnJump;
+
         CastInvisibleSpellAction.performed += OnCastInvisibleSpell;
-        CastMovePlanetSpellAction.performed += OnCastMovePlanetSpell;
-        jumpParticle.Stop();
+        CastChangePlanetDirectionAction.performed += OnCastMovePlanetSpell;
+        CastSlowDownPlanetSpellAction.performed += OnCastSlowDownPlanetSpell;
 
         VisualElement rootElement = deathScreenUI.rootVisualElement;
         rootElement.Q<Button>("RestartBtn").clicked += OnRestartClicked;
         rootElement.Q<Button>("HomeBtn").clicked += OnHomeClicked;
-        rootElement.Q<Button>("NextBtn").clicked += OnNextClicked;
         rootElement.style.visibility = Visibility.Hidden;
     }
 
@@ -61,16 +63,17 @@ public class Frog : MonoBehaviour
     {
         JumpAction.Enable();
         CastInvisibleSpellAction.Enable();
-        CastMovePlanetSpellAction.Enable();
+        CastChangePlanetDirectionAction.Enable();
+        CastSlowDownPlanetSpellAction.Enable();
     }
 
     private void OnDisable()
     {
         JumpAction.Disable();
         CastInvisibleSpellAction.Disable();
-        CastMovePlanetSpellAction.Disable();
+        CastChangePlanetDirectionAction.Disable();
+        CastSlowDownPlanetSpellAction.Disable();
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -95,6 +98,14 @@ public class Frog : MonoBehaviour
         }
 
         if ((other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Enemy") && IsInvisible == false)
+        {
+            Die();
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Obstacle" && IsInvisible == false)
         {
             Die();
         }
@@ -144,15 +155,32 @@ public class Frog : MonoBehaviour
 
     private void OnCastMovePlanetSpell(InputAction.CallbackContext ctx)
     {
-        if (Mana != 0)
+        if (Mana != 0 && LandedPlanet != null)
         {
-            var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.MovePlanet).FirstOrDefault();
+            var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.ChangePlanetDirection).FirstOrDefault();
 
             if (spell.ManaCost > Mana) return;
 
             Mana -= spell.ManaCost;
 
-            spell.Act(this.gameObject);
+            spell.Act(this.LandedPlanet.gameObject);
+        }
+    }
+
+    private void OnCastSlowDownPlanetSpell(InputAction.CallbackContext ctx)
+    {
+        if (Mana != 0 && LandedPlanet != null)
+        {
+            if (LandedPlanet.IsSlowed == false)
+            {
+                var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.SlowDownPlanetSpell).FirstOrDefault();
+
+                if (spell.ManaCost > Mana) return;
+
+                Mana -= spell.ManaCost;
+
+                spell.Act(this.LandedPlanet.gameObject);
+            }
         }
     }
 
@@ -167,11 +195,6 @@ public class Frog : MonoBehaviour
     }
 
     private void OnHomeClicked()
-    {
-
-    }
-
-    private void OnNextClicked()
     {
 
     }

@@ -18,6 +18,7 @@ namespace Universe
         public int NumberOfObstacles = 0;
         [SerializeField] private PlanetType type;
         public Obstacles ObstaclesPrefab;
+        public bool IsSlowed = false;
 
         [Space(20)]
 
