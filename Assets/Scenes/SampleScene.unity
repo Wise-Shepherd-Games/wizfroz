@@ -1762,19 +1762,79 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1177089506}
     - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: JumpAction.m_SingletonActionBindings.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: JumpAction.m_SingletonActionBindings.Array.data[1].m_Id
+      value: 8986a039-6d2c-45a8-b5d9-362f117e9dd9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: JumpAction.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <XInputController>/buttonSouth
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: JumpAction.m_SingletonActionBindings.Array.data[1].m_Action
+      value: Jump
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastInvisibleSpellAction.m_SingletonActionBindings.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastSlowDownPlanetSpellAction.m_SingletonActionBindings.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
       propertyPath: CastChangePlanetDirectionAction.m_SingletonActionBindings.Array.size
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastInvisibleSpellAction.m_SingletonActionBindings.Array.data[1].m_Id
+      value: 3d28ea49-2ca1-4a57-9cfc-1baa47dc5fd2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastInvisibleSpellAction.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <XInputController>/buttonWest
       objectReference: {fileID: 0}
     - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
       propertyPath: CastMovePlanetSpellAction.m_SingletonActionBindings.Array.data[0].m_Path
       value: <Keyboard>/x
       objectReference: {fileID: 0}
     - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastInvisibleSpellAction.m_SingletonActionBindings.Array.data[1].m_Action
+      value: Cast Invisible Spell
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastSlowDownPlanetSpellAction.m_SingletonActionBindings.Array.data[1].m_Id
+      value: 5a7aacf8-9437-4e2c-bcf3-1b23cb9c71b2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
       propertyPath: CastChangePlanetDirectionAction.m_SingletonActionBindings.Array.data[0].m_Id
       value: a4ee1ca7-0024-4ab1-b75a-635b34caf131
       objectReference: {fileID: 0}
     - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastChangePlanetDirectionAction.m_SingletonActionBindings.Array.data[1].m_Id
+      value: 65662dc1-90e2-4610-b47c-4f4d60f38ab5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastSlowDownPlanetSpellAction.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <XInputController>/buttonEast
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastChangePlanetDirectionAction.m_SingletonActionBindings.Array.data[1].m_Path
+      value: <XInputController>/buttonNorth
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastSlowDownPlanetSpellAction.m_SingletonActionBindings.Array.data[1].m_Action
+      value: Cast Slow Down Planet Spell
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
       propertyPath: CastChangePlanetDirectionAction.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Cast Change Planet Direction
+      objectReference: {fileID: 0}
+    - target: {fileID: 9216478239913388309, guid: efd458eed3dd88c4da874617d7e16782, type: 3}
+      propertyPath: CastChangePlanetDirectionAction.m_SingletonActionBindings.Array.data[1].m_Action
       value: Cast Change Planet Direction
       objectReference: {fileID: 0}
     m_RemovedComponents: []

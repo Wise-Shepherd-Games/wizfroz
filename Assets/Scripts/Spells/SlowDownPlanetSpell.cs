@@ -22,14 +22,9 @@ namespace Spells
             PlanetInitialRotationSpeed = planet.RotateVelocity;
             PlanetInitialScaleTime = planet.ScaleTime;
 
-            Debug.Log($"Initial: RV : {planet.RotateVelocity} | ST : {planet.ScaleTime}");
-
             planet.RotateVelocity = PlanetInitialRotationSpeed - (0.5f * PlanetInitialRotationSpeed);
             planet.ScaleTime = PlanetInitialScaleTime + Mathf.CeilToInt(0.5f * (float)PlanetInitialScaleTime);
             planet.IsSlowed = true;
-
-
-            Debug.Log($"Change: RV : {planet.RotateVelocity} | ST : {planet.ScaleTime}");
 
             StartCoroutine(CountdownSlowedDown(planet));
         }
@@ -45,9 +40,6 @@ namespace Spells
             planet.RotateVelocity = PlanetInitialRotationSpeed;
             planet.ScaleTime = PlanetInitialScaleTime;
             planet.IsSlowed = false;
-
-
-            Debug.Log($"End: RV : {planet.RotateVelocity} | ST : {planet.ScaleTime}");
         }
     }
 }

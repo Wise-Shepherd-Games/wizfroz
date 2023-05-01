@@ -4928,8 +4928,16 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 849e656a-1414-4509-9405-42e13606611e
+      m_Id: 1bf1620e-f696-4ea8-956c-e7dbc2ae8db8
       m_Path: <Keyboard>/space
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Jump
+      m_Flags: 0
+    - m_Name: 
+      m_Id: c4d203a3-ff33-432d-8594-80d44ced5746
+      m_Path: <XInputController>/buttonSouth
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -4952,6 +4960,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Cast Invisible Spell
       m_Flags: 0
+    - m_Name: 
+      m_Id: fdde3bca-b3a4-4cbe-8dec-637e0f167408
+      m_Path: <XInputController>/buttonWest
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cast Invisible Spell
+      m_Flags: 0
     m_Flags: 0
   CastChangePlanetDirectionAction:
     m_Name: Cast Change Planet Direction
@@ -4969,6 +4985,14 @@ MonoBehaviour:
       m_Groups: 
       m_Action: Cast Change Planet Direction
       m_Flags: 0
+    - m_Name: 
+      m_Id: 28209827-9df0-4af0-8a16-dd4f59610cc5
+      m_Path: <XInputController>/buttonNorth
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cast Change Planet Direction
+      m_Flags: 0
     m_Flags: 0
   CastSlowDownPlanetSpellAction:
     m_Name: Cast Slow Down Planet Spell
@@ -4981,6 +5005,14 @@ MonoBehaviour:
     - m_Name: 
       m_Id: 6d2d99d2-f9c8-4078-93fa-f9963cdf8b26
       m_Path: <Keyboard>/c
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Cast Slow Down Planet Spell
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 74e3d1dd-d386-47e0-bb4d-54d963f9643b
+      m_Path: <XInputController>/buttonEast
       m_Interactions: 
       m_Processors: 
       m_Groups: 
