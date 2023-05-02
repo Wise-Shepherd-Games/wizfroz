@@ -33,7 +33,7 @@ public class Frog : MonoBehaviour
     [Header("Effects and More:")]
     [SerializeField] private ParticleSystem jumpParticle;
     [SerializeField] private UIDocument deathScreenUI;
-    GameObject deathScreenGameObject;
+    [SerializeField] private UIDocument winScreenUI;
 
     [Space(20)]
     [Header("Stats and More:")]
@@ -43,6 +43,7 @@ public class Frog : MonoBehaviour
     public List<Spell> Spells;
     public Planet LandedPlanet = null;
     Planet LastPlanet = null;
+    public bool Won = false;
 
     private void Awake()
     {
@@ -53,10 +54,15 @@ public class Frog : MonoBehaviour
         CastChangePlanetDirectionAction.performed += OnCastMovePlanetSpell;
         CastSlowDownPlanetSpellAction.performed += OnCastSlowDownPlanetSpell;
 
-        VisualElement rootElement = deathScreenUI.rootVisualElement;
-        rootElement.Q<Button>("RestartBtn").clicked += OnRestartClicked;
-        rootElement.Q<Button>("HomeBtn").clicked += OnHomeClicked;
-        rootElement.style.visibility = Visibility.Hidden;
+        VisualElement deathUIRootElement = deathScreenUI.rootVisualElement;
+        deathUIRootElement.Q<Button>("RestartBtn").clicked += OnRestartClicked;
+        deathUIRootElement.Q<Button>("HomeBtn").clicked += OnHomeClicked;
+        deathUIRootElement.style.visibility = Visibility.Hidden;
+
+        VisualElement winUIRootElement = winScreenUI.rootVisualElement;
+        winUIRootElement.Q<Button>("RepeatBtn").clicked += OnRestartClicked;
+        winUIRootElement.Q<Button>("NextBtn").clicked += OnNextClicked;
+        winUIRootElement.style.visibility = Visibility.Hidden;
     }
 
     private void OnEnable()
@@ -84,11 +90,18 @@ public class Frog : MonoBehaviour
             CancelInvoke("Die");
             rigidBody.velocity = Vector2.zero;
 
+            if (LandedPlanet.IsWinPlanet)
+            {
+                LandedPlanet.StopAllCoroutines();
+                Win();
+            }
+
             if (LastPlanet != null)
             {
                 LastPlanet.TryGetComponent<CircleCollider2D>(out var collider2D);
                 collider2D.enabled = true;
             }
+
             jumpParticle.Clear();
             jumpParticle.Stop();
             this.transform.SetParent(LandedPlanet.transform, true);
@@ -97,7 +110,7 @@ public class Frog : MonoBehaviour
             transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
         }
 
-        if ((other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Enemy") && IsInvisible == false)
+        if ((other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Enemy") && IsInvisible == false && Won == false)
         {
             Die();
         }
@@ -124,6 +137,12 @@ public class Frog : MonoBehaviour
             LastPlanet = planet;
             LandedPlanet = null;
         }
+    }
+
+    public void Win()
+    {
+        Won = true;
+        winScreenUI.rootVisualElement.style.visibility = Visibility.Visible;
     }
 
     public void Die()
@@ -195,6 +214,11 @@ public class Frog : MonoBehaviour
     }
 
     private void OnHomeClicked()
+    {
+
+    }
+
+    private void OnNextClicked()
     {
 
     }

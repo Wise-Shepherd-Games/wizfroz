@@ -18,7 +18,9 @@ namespace Universe
         public int NumberOfObstacles = 0;
         [SerializeField] private PlanetType type;
         public Obstacles ObstaclesPrefab;
+        public GameObject FlagPrefab;
         public bool IsSlowed = false;
+        public bool IsWinPlanet = false;
 
         [Space(20)]
 
@@ -64,8 +66,11 @@ namespace Universe
 
             if (frog != null)
             {
-                StopAllCoroutines();
-                StartCoroutine(ChangeScaleOverTime(Vector2.zero, ScaleTime));
+                if (frog.Won == false)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(ChangeScaleOverTime(Vector2.zero, ScaleTime));
+                }
             }
         }
 
@@ -129,23 +134,43 @@ namespace Universe
         {
             Vector2 center = this.gameObject.transform.position;
 
-            for (int i = 0; i < NumberOfObstacles; i++)
+            if (this.IsWinPlanet == false)
             {
-                var newObstacle = Instantiate(ObstaclesPrefab);
-                float angle = i * Mathf.PI * 2f / NumberOfObstacles;
-                float x = Mathf.Cos(angle) * PlanetSize * 0.7f;
-                float y = Mathf.Sin(angle) * PlanetSize * 0.7f;
+                for (int i = 0; i < NumberOfObstacles; i++)
+                {
+                    var newObstacle = Instantiate(ObstaclesPrefab);
+                    float angle = i * Mathf.PI * 2f / NumberOfObstacles;
+                    float x = Mathf.Cos(angle) * PlanetSize * 0.7f;
+                    float y = Mathf.Sin(angle) * PlanetSize * 0.7f;
+
+                    Vector2 point = new Vector2(x, y) + center;
+
+                    newObstacle.transform.position = new Vector3(point.x, point.y, 1);
+                    newObstacle.transform.parent = this.gameObject.transform;
+
+                    float rotationAngle = angle * Mathf.Rad2Deg - 90f;
+                    newObstacle.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
+
+                    newObstacle.SetSprite(type);
+                }
+            }
+            else
+            {
+                var flag = Instantiate(FlagPrefab);
+
+                float angle = Mathf.PI * 2f;
+                float x = Mathf.Cos(angle) * PlanetSize * 0.9f;
+                float y = Mathf.Sin(angle) * PlanetSize * 0.9f;
 
                 Vector2 point = new Vector2(x, y) + center;
 
-                newObstacle.transform.position = new Vector3(point.x, point.y, 1);
-                newObstacle.transform.parent = this.gameObject.transform;
+                flag.transform.position = new Vector3(point.x, point.y, 1);
+                flag.transform.parent = this.gameObject.transform;
 
                 float rotationAngle = angle * Mathf.Rad2Deg - 90f;
-                newObstacle.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
-
-                newObstacle.SetSprite(type);
+                flag.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
             }
+
         }
     }
 }
