@@ -153,6 +153,7 @@ public class Frog : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext ctx)
     {
+        if (this.Won) return;
         Invoke("Die", MaxSecondsFloating);
         rigidBody.AddForce(transform.up * JumpForce);
         jumpParticle.Play();
