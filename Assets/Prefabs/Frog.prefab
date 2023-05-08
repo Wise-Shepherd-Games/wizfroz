@@ -4953,8 +4953,8 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 185a1374-67f1-4c23-a2ec-074d17acb769
-      m_Path: <Keyboard>/z
+      m_Id: d36522b8-02af-4e20-b84d-d38b0899c800
+      m_Path: <Keyboard>/c
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -4978,8 +4978,8 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 8040abc3-8291-4659-8970-b749811d7195
-      m_Path: <Keyboard>/x
+      m_Id: 49d93159-bcdd-4732-ba1b-f294ecf66516
+      m_Path: <Keyboard>/z
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -5003,8 +5003,8 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings:
     - m_Name: 
-      m_Id: 6d2d99d2-f9c8-4078-93fa-f9963cdf8b26
-      m_Path: <Keyboard>/c
+      m_Id: 52fc1d89-f4fa-4986-8241-e13c82a0eaf7
+      m_Path: <Keyboard>/x
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -5023,8 +5023,8 @@ MonoBehaviour:
   LeftFootSpriteRenderer: {fileID: 9216478240029545075}
   RightFootSpriteRenderer: {fileID: 9216478240655423391}
   jumpParticle: {fileID: 9216478239322451343}
-  deathScreenUI: {fileID: 0}
-  Mana: 30
+  Mana: 0
+  MaxMana: 50
   OctobearTrophies: 0
   IsInvisible: 0
   Spells:
@@ -5032,6 +5032,7 @@ MonoBehaviour:
   - {fileID: 105173765290874807}
   - {fileID: 7918247122352516370}
   LandedPlanet: {fileID: 0}
+  Won: 0
 --- !u!50 &9216478239913388305
 Rigidbody2D:
   serializedVersion: 4

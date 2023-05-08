@@ -9,6 +9,7 @@ public class OctobearTrophyCollectable : Collectable
     {
         particle.Play();
         f.OctobearTrophies += OctobearTrophiesGivenOnCollision;
+        UIEventManager.EmitGotCollectableToUI("octobear");
     }
 
     public override void ActOnExit(Frog f)

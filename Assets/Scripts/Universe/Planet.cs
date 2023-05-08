@@ -56,7 +56,7 @@ namespace Universe
             if (ShouldDestroy())
             {
                 Destroy(gameObject);
-                if (frog) frog.Die();
+                if (frog) frog.Die("Shrinked to space abism...");
             }
         }
 

@@ -25,6 +25,9 @@ namespace Spells
             if (!particle.isPlaying)
                 particle.Play();
 
+            var frog = FindObjectOfType<Frog>();
+            UIEventManager.EmitUpdateManaBarUI(frog.Mana);
+
             Action(target);
         }
 

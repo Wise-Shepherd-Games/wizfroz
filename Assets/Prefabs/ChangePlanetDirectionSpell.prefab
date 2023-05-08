@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b28f994dec534377aba382ea327c574, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ManaCost: 15
+  ManaCost: 5
   Type: 1
   particle: {fileID: 5696002074880174051}
 --- !u!1 &8136161655239097969

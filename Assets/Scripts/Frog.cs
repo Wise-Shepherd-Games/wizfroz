@@ -32,12 +32,12 @@ public class Frog : MonoBehaviour
     [Space(20)]
     [Header("Effects and More:")]
     [SerializeField] private ParticleSystem jumpParticle;
-    [SerializeField] private UIDocument deathScreenUI;
-    [SerializeField] private UIDocument winScreenUI;
+
 
     [Space(20)]
     [Header("Stats and More:")]
     public float Mana = 0;
+    public float MaxMana = 50f;
     public float OctobearTrophies = 0;
     public bool IsInvisible = false;
     public List<Spell> Spells;
@@ -53,16 +53,6 @@ public class Frog : MonoBehaviour
         CastInvisibleSpellAction.performed += OnCastInvisibleSpell;
         CastChangePlanetDirectionAction.performed += OnCastMovePlanetSpell;
         CastSlowDownPlanetSpellAction.performed += OnCastSlowDownPlanetSpell;
-
-        VisualElement deathUIRootElement = deathScreenUI.rootVisualElement;
-        deathUIRootElement.Q<Button>("RestartBtn").clicked += OnRestartClicked;
-        deathUIRootElement.Q<Button>("HomeBtn").clicked += OnHomeClicked;
-        deathUIRootElement.style.visibility = Visibility.Hidden;
-
-        VisualElement winUIRootElement = winScreenUI.rootVisualElement;
-        winUIRootElement.Q<Button>("RepeatBtn").clicked += OnRestartClicked;
-        winUIRootElement.Q<Button>("NextBtn").clicked += OnNextClicked;
-        winUIRootElement.style.visibility = Visibility.Hidden;
     }
 
     private void OnEnable()
@@ -87,7 +77,7 @@ public class Frog : MonoBehaviour
 
         if (LandedPlanet != null)
         {
-            CancelInvoke("Die");
+            CancelInvoke("DieLostInSpace");
             rigidBody.velocity = Vector2.zero;
 
             if (LandedPlanet.IsWinPlanet)
@@ -112,7 +102,18 @@ public class Frog : MonoBehaviour
 
         if ((other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Enemy") && IsInvisible == false && Won == false)
         {
-            Die();
+            switch (other.gameObject.tag)
+            {
+                case "Obstacle":
+                    Die("These space obstacles are, indeed, a nightmare!");
+                    break;
+                case "Enemy":
+                    Die("Evil space creatures... beware of them!");
+                    break;
+                default:
+                    Die("Let's try again!");
+                    break;
+            }
         }
     }
 
@@ -120,7 +121,7 @@ public class Frog : MonoBehaviour
     {
         if (other.gameObject.tag == "Obstacle" && IsInvisible == false)
         {
-            Die();
+            Die("Let's try again!");
         }
     }
 
@@ -142,25 +143,33 @@ public class Frog : MonoBehaviour
     public void Win()
     {
         Won = true;
-        winScreenUI.rootVisualElement.style.visibility = Visibility.Visible;
+        UIEventManager.EmitShowWinUI();
     }
 
-    public void Die()
+    public void Die(string deathMessage)
     {
-        deathScreenUI.rootVisualElement.style.visibility = Visibility.Visible;
+        UIEventManager.EmitShowDefeatUI(deathMessage);
+        Destroy(gameObject);
+    }
+
+    public void DieLostInSpace()
+    {
+        UIEventManager.EmitShowDefeatUI("Don't lose yourself to the endless space...");
         Destroy(gameObject);
     }
 
     private void OnJump(InputAction.CallbackContext ctx)
     {
         if (this.Won) return;
-        Invoke("Die", MaxSecondsFloating);
+        Invoke("DieLostInSpace", MaxSecondsFloating);
         rigidBody.AddForce(transform.up * JumpForce);
         jumpParticle.Play();
     }
 
     private void OnCastInvisibleSpell(InputAction.CallbackContext ctx)
     {
+        if (this.Won) return;
+
         if (Mana != 0 && IsInvisible == false)
         {
             var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.Invisible).FirstOrDefault();
@@ -175,6 +184,8 @@ public class Frog : MonoBehaviour
 
     private void OnCastMovePlanetSpell(InputAction.CallbackContext ctx)
     {
+        if (this.Won) return;
+
         if (Mana != 0 && LandedPlanet != null)
         {
             var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.ChangePlanetDirection).FirstOrDefault();
@@ -189,6 +200,8 @@ public class Frog : MonoBehaviour
 
     private void OnCastSlowDownPlanetSpell(InputAction.CallbackContext ctx)
     {
+        if (this.Won) return;
+
         if (Mana != 0 && LandedPlanet != null)
         {
             if (LandedPlanet.IsSlowed == false)
@@ -207,20 +220,5 @@ public class Frog : MonoBehaviour
     private void ResetScale()
     {
         this.transform.localScale = Vector3.one;
-    }
-
-    private void OnRestartClicked()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-
-    private void OnHomeClicked()
-    {
-
-    }
-
-    private void OnNextClicked()
-    {
-
     }
 }
