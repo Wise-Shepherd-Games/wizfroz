@@ -1,14 +1,11 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
-using System.Linq;
-using System;
 
 namespace UI
 {
     public class UIManager : MonoBehaviour
     {
-        private static UIManager instance = null;
 
         [Header("UI Documents:")]
         [SerializeField] private UIDocument deathScreenUI;
@@ -24,19 +21,7 @@ namespace UI
 
         void Awake()
         {
-            if (instance != null && instance != this)
-            {
-                Destroy(this.gameObject);
-                return;
-            }
-
-            instance = this;
-            DontDestroyOnLoad(this.gameObject);
-
-            UIEventManager.ShowDefeatUI += ShowDefeatUI;
-            UIEventManager.ShowWinUI += ShowWinUI;
-            UIEventManager.UpdateManaBarUI += UpdateManaBarUI;
-            UIEventManager.GotCollectableToUI += UpdateCollectableCount;
+            SubscribeEvents();
 
             VisualElement deathUIRootElement = deathScreenUI.rootVisualElement;
             deathUIRootElement.Q<Button>("RestartBtn").clicked += OnRestartClicked;
@@ -44,6 +29,7 @@ namespace UI
             deathUIRootElement.style.visibility = Visibility.Hidden;
 
             VisualElement winUIRootElement = winScreenUI.rootVisualElement;
+            winUIRootElement.Q<Button>("HomeBtn").clicked += OnHomeClicked;
             winUIRootElement.Q<Button>("RepeatBtn").clicked += OnRestartClicked;
             winUIRootElement.Q<Button>("NextBtn").clicked += OnNextClicked;
             winUIRootElement.style.visibility = Visibility.Hidden;
@@ -189,20 +175,35 @@ namespace UI
 
         private void OnRestartClicked()
         {
+            UnsubscribeEvents();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            hide = true;
-            refresh = true;
-            totalMana = null;
         }
 
         private void OnHomeClicked()
         {
-
+            UnsubscribeEvents();
+            SceneManager.LoadScene("Menu");
         }
 
         private void OnNextClicked()
         {
 
+        }
+
+        private void SubscribeEvents()
+        {
+            UIEventManager.ShowDefeatUI += ShowDefeatUI;
+            UIEventManager.ShowWinUI += ShowWinUI;
+            UIEventManager.UpdateManaBarUI += UpdateManaBarUI;
+            UIEventManager.GotCollectableToUI += UpdateCollectableCount;
+        }
+
+        private void UnsubscribeEvents()
+        {
+            UIEventManager.ShowDefeatUI -= ShowDefeatUI;
+            UIEventManager.ShowWinUI -= ShowWinUI;
+            UIEventManager.UpdateManaBarUI -= UpdateManaBarUI;
+            UIEventManager.GotCollectableToUI -= UpdateCollectableCount;
         }
     }
 }
