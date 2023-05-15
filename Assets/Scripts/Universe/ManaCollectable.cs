@@ -10,8 +10,8 @@ public class ManaCollectable : Collectable
         particle.Play();
         if (f.Mana > f.MaxMana) return;
         f.Mana += ManaGivenOnCollision;
-        UIEventManager.EmitUpdateManaBarUI(f.Mana);
-        UIEventManager.EmitGotCollectableToUI("mana");
+        UIEventManager.UpdateManaBarUI(f.Mana);
+        UIEventManager.GotCollectableToUI("mana");
     }
 
     public override void ActOnExit(Frog f)

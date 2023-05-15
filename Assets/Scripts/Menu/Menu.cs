@@ -52,6 +52,7 @@ public class Menu : MonoBehaviour
         rootElemMainMenu.style.visibility = Visibility.Hidden;
         rootPlayMenu.style.visibility = Visibility.Hidden;
         rootOptionsMenu.style.visibility = Visibility.Visible;
+        AudioEventManager.ChangeMusic(null, "SelectLevel");
     }
 
     private void HandlePlayButtonClick()
@@ -59,6 +60,7 @@ public class Menu : MonoBehaviour
         rootElemMainMenu.style.visibility = Visibility.Hidden;
         rootPlayMenu.style.visibility = Visibility.Visible;
         rootOptionsMenu.style.visibility = Visibility.Hidden;
+        AudioEventManager.ChangeMusic(null, "SelectLevel");
     }
 
     private void HandleExitButtonClick()
@@ -88,6 +90,7 @@ public class Menu : MonoBehaviour
         rootElemMainMenu.style.visibility = Visibility.Visible;
         rootPlayMenu.style.visibility = Visibility.Hidden;
         rootOptionsMenu.style.visibility = Visibility.Hidden;
+        AudioEventManager.ChangeMusic(null, "Menu");
     }
 
     private void GenerateLoadLevelButtons()
@@ -167,6 +170,7 @@ public class Menu : MonoBehaviour
     {
         string level = e.target.GetType().GetProperty("name").GetValue(e.target).ToString();
         LevelsInfo.CurrentLevel = int.Parse(level);
+        AudioEventManager.ChangeMusic(null, level);
         SceneManager.LoadScene(level);
     }
 

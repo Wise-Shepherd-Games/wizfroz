@@ -208,23 +208,25 @@ namespace UI
         private void OnRestartClicked()
         {
             UnsubscribeEvents();
-            ProgressEventManager.EmitSaveData();
+            ProgressEventManager.SaveData();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         private void OnHomeClicked()
         {
             UnsubscribeEvents();
-            ProgressEventManager.EmitSaveData();
+            ProgressEventManager.SaveData();
             ProgressEventManager.RefreshData();
+            AudioEventManager.ChangeMusic(null, "Menu");
             SceneManager.LoadScene("Menu");
         }
 
         private void OnNextClicked()
         {
             UnsubscribeEvents();
-            ProgressEventManager.EmitSaveData();
+            ProgressEventManager.SaveData();
             LevelsInfo.CurrentLevel++;
+            AudioEventManager.ChangeMusic(null, LevelsInfo.CurrentLevel.ToString());
             SceneManager.LoadScene(LevelsInfo.CurrentLevel.ToString());
         }
 

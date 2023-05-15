@@ -144,19 +144,19 @@ public class Frog : MonoBehaviour
     public void Win()
     {
         Won = true;
-        UIEventManager.EmitShowWinUI();
+        UIEventManager.ShowWinUI();
     }
 
     public void Die(string deathMessage)
     {
-        UIEventManager.EmitShowDefeatUI(deathMessage);
+        UIEventManager.ShowDefeatUI(deathMessage);
         LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount++;
         Destroy(gameObject);
     }
 
     public void DieLostInSpace()
     {
-        UIEventManager.EmitShowDefeatUI("Don't lose yourself to the endless space...");
+        UIEventManager.ShowDefeatUI("Don't lose yourself to the endless space...");
         LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount++;
         Destroy(gameObject);
     }
