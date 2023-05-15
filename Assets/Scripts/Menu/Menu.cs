@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
-
-using System;
+using Levels;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +10,6 @@ public class Menu : MonoBehaviour
     [SerializeField] private UIDocument mainMenu;
     [SerializeField] private UIDocument optionsMenu;
     [SerializeField] private UIDocument playMenu;
-    [SerializeField] private List<string> scenesNames;
 
     private VisualElement rootElemMainMenu;
     private VisualElement rootOptionsMenu;
@@ -28,9 +26,18 @@ public class Menu : MonoBehaviour
 
         SetMainMenuEvents();
         SetOptionsMenuEvents();
-
-        GenerateLoadLevelButtons();
         SetPlayMenuEvents();
+    }
+
+    void Start()
+    {
+        GenerateLoadLevelButtons();
+    }
+
+
+    void Update()
+    {
+
     }
 
     private void SetMainMenuEvents()
@@ -86,37 +93,60 @@ public class Menu : MonoBehaviour
     private void GenerateLoadLevelButtons()
     {
         var levelContainer = rootPlayMenu.Q<VisualElement>("LevelContainer");
+        levelContainer.Clear();
 
-        int index = 1;
-        foreach (var name in scenesNames)
+        int index = 0;
+        bool wasPreviousCompleted = false;
+        foreach (var level in Levels.LevelsInfo.Levels)
         {
             Button newButton = new Button();
             newButton.name = index.ToString();
-            newButton.text = index.ToString();
+            newButton.text = (index + 1).ToString();
             newButton.AddToClassList("buttons");
             newButton.AddToClassList("RoundButton");
-            newButton.RegisterCallback<MouseOverEvent>((callback) => MouseOverOnLevelButton(callback));
-            newButton.RegisterCallback<MouseLeaveEvent>((callback) => MouseLeaveOnLevelButton(callback));
-            newButton.RegisterCallback<ClickEvent>((callback) => ClickOnLevelButton(callback));
-            newButton.CaptureMouse();
+
             levelContainer.Add(newButton);
+
+            if (wasPreviousCompleted || index == 0)
+            {
+                newButton.RegisterCallback<MouseOverEvent>((callback) => MouseOverOnLevelButton(callback));
+                newButton.RegisterCallback<MouseLeaveEvent>((callback) => MouseLeaveOnLevelButton(callback));
+                newButton.RegisterCallback<ClickEvent>((callback) => ClickOnLevelButton(callback));
+                newButton.CaptureMouse();
+            }
+            else
+            {
+                newButton.SetEnabled(false);
+            }
+
             index++;
+            wasPreviousCompleted = level.PlayerAlreadyCompleted;
         }
     }
 
     private void MouseOverOnLevelButton(MouseOverEvent e)
     {
         string level = e.target.GetType().GetProperty("name").GetValue(e.target).ToString();
+        Level levelData = LevelsInfo.Levels.Where(obj => obj.Name == level).FirstOrDefault();
+
         var levelInfo = rootPlayMenu.Q<Label>("LevelInfo");
-        var firstStar = rootPlayMenu.Q<VisualElement>("Star1");
-        var secondStar = rootPlayMenu.Q<VisualElement>("Star2");
-        var thirdStar = rootPlayMenu.Q<VisualElement>("Star3");
+        VisualElement[] stars = new VisualElement[3] { rootPlayMenu.Q<VisualElement>("Star1"), rootPlayMenu.Q<VisualElement>("Star2"), rootPlayMenu.Q<VisualElement>("Star3") };
 
-        levelInfo.text = $"You've achieved all stars of Level {level}...";
+        for (int i = 0; i < levelData.PlayersStars; i++)
+        {
+            stars[i].style.visibility = Visibility.Visible;
+        }
 
-        firstStar.style.visibility = Visibility.Visible;
-        secondStar.style.visibility = Visibility.Visible;
-        thirdStar.style.visibility = Visibility.Visible;
+        string defaultText = $"Best Time: {levelData.PlayersBestTime} s - Octobears Collected: {levelData.PlayersOctobearsCollected} - Mana Shards Collected: {levelData.PlayersManaCollected} - Death Count: {levelData.PlayersDeathCount}";
+
+        if (levelData.PlayersStars == 3)
+        {
+            levelInfo.text = $"{defaultText} <br> Congrats! You've achieved all stars of Level {int.Parse(level) + 1}...";
+        }
+        else
+        {
+            levelInfo.text = $"{defaultText} <br> You've achieved {levelData.PlayersStars} stars of Level {int.Parse(level) + 1}...";
+        }
     }
 
     private void MouseLeaveOnLevelButton(MouseLeaveEvent e)
@@ -136,22 +166,12 @@ public class Menu : MonoBehaviour
     private void ClickOnLevelButton(ClickEvent e)
     {
         string level = e.target.GetType().GetProperty("name").GetValue(e.target).ToString();
-        SceneManager.LoadScene("DevScene");
+        LevelsInfo.CurrentLevel = int.Parse(level);
+        SceneManager.LoadScene(level);
     }
 
     private void SetPlayMenuEvents()
     {
         rootPlayMenu.Q<Button>("Back").clicked += HandleBackToMainMenuButton;
-    }
-
-    void Start()
-    {
-
-    }
-
-
-    void Update()
-    {
-
     }
 }

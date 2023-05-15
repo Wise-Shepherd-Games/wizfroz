@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 using Universe;
 using Spells;
+using Levels;
 
 public class Frog : MonoBehaviour
 {
@@ -149,12 +150,16 @@ public class Frog : MonoBehaviour
     public void Die(string deathMessage)
     {
         UIEventManager.EmitShowDefeatUI(deathMessage);
+        LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount++;
+        Debug.Log(LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount);
         Destroy(gameObject);
     }
 
     public void DieLostInSpace()
     {
         UIEventManager.EmitShowDefeatUI("Don't lose yourself to the endless space...");
+        LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount++;
+        Debug.Log(LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount);
         Destroy(gameObject);
     }
 

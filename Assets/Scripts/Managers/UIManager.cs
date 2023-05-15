@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using Levels;
 
 namespace UI
 {
@@ -16,6 +17,8 @@ namespace UI
         private bool refresh = false;
         private float time = 0f;
         private float? totalMana = null;
+        private int octobearsOnStart;
+        private int manaOnStart;
         private int octobearsCollected = 0;
         private int manasCollected = 0;
 
@@ -62,7 +65,11 @@ namespace UI
 
             UpdateAvailableSpellsUI();
 
-            time += Time.deltaTime;
+            if (winScreenUI.rootVisualElement.style.visibility == Visibility.Hidden)
+            {
+                time += Time.deltaTime;
+            }
+
             VisualElement gameplayUIRootElement = gameplayUI.rootVisualElement;
             gameplayUIRootElement.Q<Label>("Timer").text = $"{Mathf.FloorToInt(time)} s";
 
@@ -85,9 +92,11 @@ namespace UI
             }
 
             var octobears = FindObjectsOfType<OctobearTrophyCollectable>().Length;
+            octobearsOnStart = octobears;
             gameplayUIRootElement.Q<Label>("OctobearsCollected").text = $" {octobearsCollected}/{octobears}";
 
             var manas = FindObjectsOfType<ManaCollectable>().Length;
+            manaOnStart = manas;
             gameplayUIRootElement.Q<Label>("ManaCollected").text = $" {manasCollected}/{manas}";
         }
 
@@ -164,6 +173,33 @@ namespace UI
         private void ShowWinUI()
         {
             winScreenUI.rootVisualElement.style.visibility = Visibility.Visible;
+
+            int stars = 0;
+
+            LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayerAlreadyCompleted = true;
+
+            if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime == 0)
+                LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime = Mathf.CeilToInt(time);
+            else if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime > time)
+            {
+
+                LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime = Mathf.CeilToInt(time);
+                stars++;
+            }
+
+            var octobears = FindObjectsOfType<OctobearTrophyCollectable>().Length;
+
+            if (manasCollected == manaOnStart) stars++;
+            if (octobearsCollected == octobearsOnStart) stars++;
+
+            if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersManaCollected < manasCollected)
+                LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersManaCollected = manasCollected;
+
+            if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersOctobearsCollected < octobearsCollected)
+                LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersOctobearsCollected = octobearsCollected;
+
+            if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersStars < stars)
+                LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersStars = stars;
         }
 
         private void ShowDefeatUI(string deathMessage)
@@ -176,18 +212,24 @@ namespace UI
         private void OnRestartClicked()
         {
             UnsubscribeEvents();
+            ProgressEventManager.EmitSaveData();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         private void OnHomeClicked()
         {
             UnsubscribeEvents();
+            ProgressEventManager.EmitSaveData();
+            ProgressEventManager.RefreshData();
             SceneManager.LoadScene("Menu");
         }
 
         private void OnNextClicked()
         {
-
+            UnsubscribeEvents();
+            ProgressEventManager.EmitSaveData();
+            LevelsInfo.CurrentLevel++;
+            SceneManager.LoadScene(LevelsInfo.CurrentLevel.ToString());
         }
 
         private void SubscribeEvents()
