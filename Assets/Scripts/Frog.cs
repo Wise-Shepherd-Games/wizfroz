@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 
 using UnityEngine;
@@ -15,6 +16,13 @@ public class Frog : MonoBehaviour
     [Header("Frog Behaviour Characteristics:")]
     public float JumpForce;
     public float MaxSecondsFloating = 3f;
+    public List<AudioClip> FrogSounds;
+    public AudioClip DeathSound;
+    public AudioClip SpellDirection;
+    public AudioClip SpellSlow;
+    public AudioClip SpellInvisible;
+    public AudioClip ManaCollected;
+    public AudioClip OctobearCollected;
 
     [Space(20)]
     [Header("Actions:")]
@@ -26,6 +34,11 @@ public class Frog : MonoBehaviour
     [Space(20)]
     [Header("Components")]
     Rigidbody2D rigidBody;
+    public AudioSource collectableAudioSource;
+    public AudioSource spellAudioSource;
+    public AudioSource jumpAndDeathAudioSource;
+    CircleCollider2D circleCollider;
+
     public SpriteRenderer SpriteRenderer;
     public SpriteRenderer LeftFootSpriteRenderer;
     public SpriteRenderer RightFootSpriteRenderer;
@@ -45,10 +58,12 @@ public class Frog : MonoBehaviour
     public Planet LandedPlanet = null;
     Planet LastPlanet = null;
     public bool Won = false;
+    public bool Died = false;
 
     private void Awake()
     {
         rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        circleCollider = gameObject.GetComponent<CircleCollider2D>();
         JumpAction.performed += OnJump;
 
         CastInvisibleSpellAction.performed += OnCastInvisibleSpell;
@@ -116,6 +131,22 @@ public class Frog : MonoBehaviour
                     break;
             }
         }
+
+        if (other.gameObject.tag == "Collectable")
+        {
+            other.TryGetComponent<ManaCollectable>(out var mana);
+
+            if (mana == null)
+            {
+                collectableAudioSource.clip = OctobearCollected;
+                collectableAudioSource.Play();
+            }
+            else
+            {
+                collectableAudioSource.clip = ManaCollected;
+                collectableAudioSource.Play();
+            }
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)
@@ -150,20 +181,37 @@ public class Frog : MonoBehaviour
     public void Die(string deathMessage)
     {
         UIEventManager.ShowDefeatUI(deathMessage);
-        LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount++;
-        Destroy(gameObject);
+        DieProcs();
     }
 
     public void DieLostInSpace()
     {
         UIEventManager.ShowDefeatUI("Don't lose yourself to the endless space...");
+        DieProcs();
+    }
+
+    public void DieProcs()
+    {
+        Died = true;
         LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount++;
-        Destroy(gameObject);
+        jumpAndDeathAudioSource.clip = DeathSound;
+        jumpAndDeathAudioSource.Play();
+        circleCollider.enabled = false;
+        rigidBody.Sleep();
+        jumpParticle.Stop();
+        LeftFootSpriteRenderer.material.color = Color.red;
+        RightFootSpriteRenderer.material.color = Color.red;
+        SpriteRenderer.material.color = Color.red;
+        StartCoroutine(ShrinkAndDie(Vector3.zero, 0.75f));
     }
 
     private void OnJump(InputAction.CallbackContext ctx)
     {
-        if (this.Won) return;
+        if (this.Won || this.Died) return;
+
+        jumpAndDeathAudioSource.clip = FrogSounds[Random.Range(0, FrogSounds.Count)];
+        jumpAndDeathAudioSource.Play();
+
         Invoke("DieLostInSpace", MaxSecondsFloating);
         rigidBody.AddForce(transform.up * JumpForce);
         jumpParticle.Play();
@@ -171,13 +219,16 @@ public class Frog : MonoBehaviour
 
     private void OnCastInvisibleSpell(InputAction.CallbackContext ctx)
     {
-        if (this.Won) return;
+        if (this.Won || this.Died) return;
 
         if (Mana != 0 && IsInvisible == false)
         {
             var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.Invisible).FirstOrDefault();
 
             if (spell.ManaCost > Mana) return;
+
+            spellAudioSource.clip = SpellInvisible;
+            spellAudioSource.Play();
 
             Mana -= spell.ManaCost;
 
@@ -187,13 +238,16 @@ public class Frog : MonoBehaviour
 
     private void OnCastMovePlanetSpell(InputAction.CallbackContext ctx)
     {
-        if (this.Won) return;
+        if (this.Won || this.Died) return;
 
         if (Mana != 0 && LandedPlanet != null)
         {
             var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.ChangePlanetDirection).FirstOrDefault();
 
             if (spell.ManaCost > Mana) return;
+
+            spellAudioSource.clip = SpellDirection;
+            spellAudioSource.Play();
 
             Mana -= spell.ManaCost;
 
@@ -203,7 +257,7 @@ public class Frog : MonoBehaviour
 
     private void OnCastSlowDownPlanetSpell(InputAction.CallbackContext ctx)
     {
-        if (this.Won) return;
+        if (this.Won || this.Died) return;
 
         if (Mana != 0 && LandedPlanet != null)
         {
@@ -212,6 +266,9 @@ public class Frog : MonoBehaviour
                 var spell = Spells.Where(obj => obj.Type == Spell.SpellTypes.SlowDownPlanetSpell).FirstOrDefault();
 
                 if (spell.ManaCost > Mana) return;
+
+                spellAudioSource.clip = SpellSlow;
+                spellAudioSource.Play();
 
                 Mana -= spell.ManaCost;
 
@@ -223,5 +280,23 @@ public class Frog : MonoBehaviour
     private void ResetScale()
     {
         this.transform.localScale = Vector3.one;
+    }
+
+    private IEnumerator ShrinkAndDie(Vector3 scale, float time)
+    {
+        float progress = 0;
+        float rate = 1 / time;
+
+        Vector3 fromScale = transform.localScale;
+        Vector3 toScale = scale;
+
+        while (progress < 1)
+        {
+            progress += Time.deltaTime * rate;
+            transform.localScale = Vector3.Lerp(fromScale, toScale, progress);
+            yield return null;
+        }
+
+        Destroy(gameObject);
     }
 }

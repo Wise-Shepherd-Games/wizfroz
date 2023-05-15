@@ -11,7 +11,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip SelectLevelMusic;
     private string currentScene;
     private static AudioManager instance = null;
-    private AudioSource musicSource;
+    public AudioSource musicSource;
+    private int baseFade = 2;
 
     void Awake()
     {
@@ -25,7 +26,6 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         currentScene = SceneManager.GetActiveScene().name;
-        this.gameObject.TryGetComponent<AudioSource>(out musicSource);
         AudioEventManager.ChangeMusic += HandleChangeMusic;
         SceneManager.activeSceneChanged += HandleActiveSceneChange;
     }
@@ -35,7 +35,7 @@ public class AudioManager : MonoBehaviour
         musicSource.volume = 0;
         musicSource.clip = MenuMusic;
         musicSource.Play();
-        StartCoroutine(StartFade(this.musicSource, null, 1, 1));
+        StartCoroutine(StartFade(this.musicSource, null, baseFade, 1));
     }
 
     private void HandleChangeMusic(AudioClip audioClip, string sceneName)
@@ -45,7 +45,7 @@ public class AudioManager : MonoBehaviour
             audioClip = ReturnMusicForScene(sceneName);
         }
 
-        StartCoroutine(StartFade(this.musicSource, audioClip, 1, 0));
+        StartCoroutine(StartFade(this.musicSource, audioClip, baseFade, 0));
     }
 
     private void HandleActiveSceneChange(Scene prev, Scene loaded)
@@ -78,7 +78,14 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-        return LevelsMusic[level];
+        try
+        {
+            return LevelsMusic[level];
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     public IEnumerator StartFade(AudioSource audioSource, AudioClip toClip, float duration, float targetVolume)
