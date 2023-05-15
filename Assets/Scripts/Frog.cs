@@ -151,7 +151,6 @@ public class Frog : MonoBehaviour
     {
         UIEventManager.EmitShowDefeatUI(deathMessage);
         LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount++;
-        Debug.Log(LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount);
         Destroy(gameObject);
     }
 
@@ -159,7 +158,6 @@ public class Frog : MonoBehaviour
     {
         UIEventManager.EmitShowDefeatUI("Don't lose yourself to the endless space...");
         LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount++;
-        Debug.Log(LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersDeathCount);
         Destroy(gameObject);
     }
 

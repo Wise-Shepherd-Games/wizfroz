@@ -37,6 +37,11 @@ namespace UI
             winUIRootElement.Q<Button>("NextBtn").clicked += OnNextClicked;
             winUIRootElement.style.visibility = Visibility.Hidden;
 
+            var manas = FindObjectsOfType<ManaCollectable>().Length;
+            manaOnStart = manas;
+
+            var octobears = FindObjectsOfType<OctobearTrophyCollectable>().Length;
+            octobearsOnStart = octobears;
         }
 
         void Start()
@@ -91,13 +96,8 @@ namespace UI
                     break;
             }
 
-            var octobears = FindObjectsOfType<OctobearTrophyCollectable>().Length;
-            octobearsOnStart = octobears;
-            gameplayUIRootElement.Q<Label>("OctobearsCollected").text = $" {octobearsCollected}/{octobears}";
-
-            var manas = FindObjectsOfType<ManaCollectable>().Length;
-            manaOnStart = manas;
-            gameplayUIRootElement.Q<Label>("ManaCollected").text = $" {manasCollected}/{manas}";
+            gameplayUIRootElement.Q<Label>("OctobearsCollected").text = $" {octobearsCollected}/{octobearsOnStart}";
+            gameplayUIRootElement.Q<Label>("ManaCollected").text = $" {manasCollected}/{manaOnStart}";
         }
 
         private void UpdateManaBarUI(float mana)
@@ -148,11 +148,8 @@ namespace UI
         {
             VisualElement gameplayUIRootElement = gameplayUI.rootVisualElement;
 
-            var octobears = FindObjectsOfType<OctobearTrophyCollectable>().Length;
-            gameplayUIRootElement.Q<Label>("OctobearsCollected").text = $" 0/{octobears}";
-
-            var manas = FindObjectsOfType<ManaCollectable>().Length;
-            gameplayUIRootElement.Q<Label>("ManaCollected").text = $" 0/{manas}";
+            gameplayUIRootElement.Q<Label>("OctobearsCollected").text = $" 0/{octobearsOnStart}";
+            gameplayUIRootElement.Q<Label>("ManaCollected").text = $" 0/{manaOnStart}";
 
             octobearsCollected = 0;
             manasCollected = 0;
@@ -180,9 +177,8 @@ namespace UI
 
             if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime == 0)
                 LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime = Mathf.CeilToInt(time);
-            else if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime > time)
+            else if ((LevelsInfo.CurrentLevel + 1) * 10 > time)
             {
-
                 LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime = Mathf.CeilToInt(time);
                 stars++;
             }
