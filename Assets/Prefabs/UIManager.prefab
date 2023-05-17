@@ -194,3 +194,5 @@ MonoBehaviour:
   deathScreenUI: {fileID: 2613412751254996562}
   winScreenUI: {fileID: 8445747523421826226}
   gameplayUI: {fileID: 5706073420585337304}
+  Click: {fileID: 8300000, guid: 16a827b47701f3c448891789cd41e9e1, type: 3}
+  Hover: {fileID: 8300000, guid: 8ea8f1c1d4dcfd142954aa595815ef36, type: 3}

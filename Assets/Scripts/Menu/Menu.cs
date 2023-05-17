@@ -11,6 +11,10 @@ public class Menu : MonoBehaviour
     [SerializeField] private UIDocument optionsMenu;
     [SerializeField] private UIDocument playMenu;
 
+    public AudioClip Click;
+    public AudioClip StartLevel;
+    public AudioClip Hover;
+
     private VisualElement rootElemMainMenu;
     private VisualElement rootOptionsMenu;
     private VisualElement rootPlayMenu;
@@ -24,6 +28,18 @@ public class Menu : MonoBehaviour
         rootPlayMenu.style.visibility = Visibility.Hidden;
         rootOptionsMenu.style.visibility = Visibility.Hidden;
 
+        string[] keys = { "SfxVolume", "MusicVolume" };
+
+        foreach (var key in keys)
+        {
+            if (!PlayerPrefs.HasKey(key))
+            {
+                PlayerPrefs.SetFloat(key, 1);
+            }
+        }
+
+        AudioEventManager.ChangeAudioVolume();
+
         SetMainMenuEvents();
         SetOptionsMenuEvents();
         SetPlayMenuEvents();
@@ -34,29 +50,33 @@ public class Menu : MonoBehaviour
         GenerateLoadLevelButtons();
     }
 
-
-    void Update()
-    {
-
-    }
-
     private void SetMainMenuEvents()
     {
         rootElemMainMenu.Q<Button>("LevelSelect").clicked += HandlePlayButtonClick;
         rootElemMainMenu.Q<Button>("Options").clicked += HandleOptionsButtonClick;
         rootElemMainMenu.Q<Button>("Exit").clicked += HandleExitButtonClick;
+
+        rootElemMainMenu.Q<Button>("LevelSelect").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
+        rootElemMainMenu.Q<Button>("Options").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
+        rootElemMainMenu.Q<Button>("Exit").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
     }
 
     private void HandleOptionsButtonClick()
     {
+        AudioEventManager.PlayUISound(Click);
         rootElemMainMenu.style.visibility = Visibility.Hidden;
         rootPlayMenu.style.visibility = Visibility.Hidden;
         rootOptionsMenu.style.visibility = Visibility.Visible;
+        var sliderSfx = rootOptionsMenu.Q<Slider>("FxVolume");
+        var sliderMusic = rootOptionsMenu.Q<Slider>("MusicVolume");
+        sliderSfx.value = PlayerPrefs.GetFloat("SfxVolume") * 100;
+        sliderMusic.value = PlayerPrefs.GetFloat("MusicVolume") * 100;
         AudioEventManager.ChangeMusic(null, "SelectLevel");
     }
 
     private void HandlePlayButtonClick()
     {
+        AudioEventManager.PlayUISound(Click);
         rootElemMainMenu.style.visibility = Visibility.Hidden;
         rootPlayMenu.style.visibility = Visibility.Visible;
         rootOptionsMenu.style.visibility = Visibility.Hidden;
@@ -72,21 +92,33 @@ public class Menu : MonoBehaviour
     {
         rootOptionsMenu.Q<Slider>("FxVolume").RegisterValueChangedCallback(obj => HandleFxVolumeValueChange(obj));
         rootOptionsMenu.Q<Slider>("MusicVolume").RegisterValueChangedCallback(obj => HandleMusicVolumeValueChange(obj));
+        rootOptionsMenu.Q<Slider>("FxVolume").RegisterCallback<ClickEvent>(obj =>
+        {
+            if (Input.GetMouseButtonUp(0))
+            {
+                AudioEventManager.PlayUISound(StartLevel);
+            }
+        });
+
         rootOptionsMenu.Q<Button>("Back").clicked += HandleBackToMainMenuButton;
+        rootOptionsMenu.Q<Button>("Back").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
     }
 
     private void HandleFxVolumeValueChange(ChangeEvent<float> e)
     {
-        Debug.Log(e);
+        PlayerPrefs.SetFloat("SfxVolume", e.newValue / 100);
+        AudioEventManager.ChangeAudioVolume();
     }
 
     private void HandleMusicVolumeValueChange(ChangeEvent<float> e)
     {
-        Debug.Log(e);
+        PlayerPrefs.SetFloat("MusicVolume", e.newValue / 100);
+        AudioEventManager.ChangeAudioVolume();
     }
 
     private void HandleBackToMainMenuButton()
     {
+        AudioEventManager.PlayUISound(Click);
         rootElemMainMenu.style.visibility = Visibility.Visible;
         rootPlayMenu.style.visibility = Visibility.Hidden;
         rootOptionsMenu.style.visibility = Visibility.Hidden;
@@ -129,6 +161,9 @@ public class Menu : MonoBehaviour
 
     private void MouseOverOnLevelButton(MouseOverEvent e)
     {
+
+        AudioEventManager.PlayUISound(Hover);
+
         string level = e.target.GetType().GetProperty("name").GetValue(e.target).ToString();
         Level levelData = LevelsInfo.Levels.Where(obj => obj.Name == level).FirstOrDefault();
 
@@ -171,11 +206,13 @@ public class Menu : MonoBehaviour
         string level = e.target.GetType().GetProperty("name").GetValue(e.target).ToString();
         LevelsInfo.CurrentLevel = int.Parse(level);
         AudioEventManager.ChangeMusic(null, level);
+        AudioEventManager.PlayUISound(StartLevel);
         SceneManager.LoadScene(level);
     }
 
     private void SetPlayMenuEvents()
     {
         rootPlayMenu.Q<Button>("Back").clicked += HandleBackToMainMenuButton;
+        rootPlayMenu.Q<Button>("Back").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
     }
 }

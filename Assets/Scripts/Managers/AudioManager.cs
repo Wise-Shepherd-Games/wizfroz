@@ -12,7 +12,9 @@ public class AudioManager : MonoBehaviour
     private string currentScene;
     private static AudioManager instance = null;
     public AudioSource musicSource;
-    private int baseFade = 2;
+    public AudioSource whiteNoiseSource;
+    public AudioSource uiSource;
+    private float baseFade = 1.5f;
 
     void Awake()
     {
@@ -27,15 +29,31 @@ public class AudioManager : MonoBehaviour
 
         currentScene = SceneManager.GetActiveScene().name;
         AudioEventManager.ChangeMusic += HandleChangeMusic;
+        AudioEventManager.ChangeAudioVolume += HandleChangeAudioVolume;
+        AudioEventManager.PlayUISound += HandlePlayUISound;
         SceneManager.activeSceneChanged += HandleActiveSceneChange;
     }
 
-    private void Start()
+    void Start()
     {
+        uiSource.volume = PlayerPrefs.GetFloat("SfxVolume");
         musicSource.volume = 0;
         musicSource.clip = MenuMusic;
         musicSource.Play();
-        StartCoroutine(StartFade(this.musicSource, null, baseFade, 1));
+        StartCoroutine(StartFade(this.musicSource, null, baseFade, PlayerPrefs.GetFloat("MusicVolume")));
+    }
+
+    private void HandlePlayUISound(AudioClip audioClip)
+    {
+        uiSource.clip = audioClip;
+        uiSource.Play();
+    }
+
+    private void HandleChangeAudioVolume()
+    {
+        musicSource.volume = PlayerPrefs.GetFloat("MusicVolume");
+        whiteNoiseSource.volume = PlayerPrefs.GetFloat("SfxVolume") / 5;
+        uiSource.volume = PlayerPrefs.GetFloat("SfxVolume");
     }
 
     private void HandleChangeMusic(AudioClip audioClip, string sceneName)
@@ -54,6 +72,15 @@ public class AudioManager : MonoBehaviour
         {
             currentScene = loaded.name;
             HandleChangeMusic(null, currentScene);
+        }
+
+        var player = FindAnyObjectByType<Frog>();
+        if (player != null)
+        {
+            foreach (var audioSources in player.GetComponents<AudioSource>())
+            {
+                audioSources.volume = PlayerPrefs.GetFloat("SfxVolume");
+            }
         }
     }
 
@@ -109,7 +136,7 @@ public class AudioManager : MonoBehaviour
         {
             audioSource.clip = toClip;
             audioSource.Play();
-            StartCoroutine(StartFade(audioSource, null, 1, 1));
+            StartCoroutine(StartFade(audioSource, null, 1, PlayerPrefs.GetFloat("MusicVolume")));
         }
 
         yield break;

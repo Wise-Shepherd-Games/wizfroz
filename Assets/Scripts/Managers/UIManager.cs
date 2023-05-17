@@ -13,6 +13,9 @@ namespace UI
         [SerializeField] private UIDocument winScreenUI;
         [SerializeField] private UIDocument gameplayUI;
 
+        public AudioClip Click;
+        public AudioClip Hover;
+
         private bool hide = false;
         private bool refresh = false;
         private float time = 0f;
@@ -28,13 +31,18 @@ namespace UI
 
             VisualElement deathUIRootElement = deathScreenUI.rootVisualElement;
             deathUIRootElement.Q<Button>("RestartBtn").clicked += OnRestartClicked;
+            deathUIRootElement.Q<Button>("RestartBtn").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
             deathUIRootElement.Q<Button>("HomeBtn").clicked += OnHomeClicked;
+            deathUIRootElement.Q<Button>("HomeBtn").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
             deathUIRootElement.style.visibility = Visibility.Hidden;
 
             VisualElement winUIRootElement = winScreenUI.rootVisualElement;
             winUIRootElement.Q<Button>("HomeBtn").clicked += OnHomeClicked;
+            winUIRootElement.Q<Button>("HomeBtn").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
             winUIRootElement.Q<Button>("RepeatBtn").clicked += OnRestartClicked;
+            winUIRootElement.Q<Button>("RepeatBtn").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
             winUIRootElement.Q<Button>("NextBtn").clicked += OnNextClicked;
+            winUIRootElement.Q<Button>("NextBtn").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
             winUIRootElement.style.visibility = Visibility.Hidden;
 
             var manas = FindObjectsOfType<ManaCollectable>().Length;
@@ -176,10 +184,12 @@ namespace UI
             LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayerAlreadyCompleted = true;
 
             if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime == 0)
-                LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime = Mathf.CeilToInt(time);
-            else if ((LevelsInfo.CurrentLevel + 1) * 10 > time)
+                LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime = Mathf.FloorToInt(time);
+            else if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime > Mathf.FloorToInt(time))
+                LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime = Mathf.FloorToInt(time);
+
+            if ((LevelsInfo.CurrentLevel + 1) * 10 >= Mathf.FloorToInt(time))
             {
-                LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime = Mathf.CeilToInt(time);
                 stars++;
             }
 
@@ -208,6 +218,7 @@ namespace UI
         private void OnRestartClicked()
         {
             UnsubscribeEvents();
+            AudioEventManager.PlayUISound(Click);
             ProgressEventManager.SaveData();
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
@@ -215,6 +226,7 @@ namespace UI
         private void OnHomeClicked()
         {
             UnsubscribeEvents();
+            AudioEventManager.PlayUISound(Click);
             ProgressEventManager.SaveData();
             ProgressEventManager.RefreshData();
             AudioEventManager.ChangeMusic(null, "Menu");
@@ -224,6 +236,7 @@ namespace UI
         private void OnNextClicked()
         {
             UnsubscribeEvents();
+            AudioEventManager.PlayUISound(Click);
             ProgressEventManager.SaveData();
             LevelsInfo.CurrentLevel++;
             AudioEventManager.ChangeMusic(null, LevelsInfo.CurrentLevel.ToString());
