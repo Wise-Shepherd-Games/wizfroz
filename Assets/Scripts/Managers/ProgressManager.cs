@@ -29,6 +29,14 @@ public class ProgressManager : MonoBehaviour
             try
             {
                 LevelsInfo.Levels = Serializer.Deserialize<List<Level>>(levelJsonPath);
+
+                if (NumberOfLevels != LevelsInfo.Levels.Count)
+                {
+                    for (int i = LevelsInfo.Levels.Count; i < (NumberOfLevels - LevelsInfo.Levels.Count) + LevelsInfo.Levels.Count; i++)
+                    {
+                        LevelsInfo.Levels.Add(new Level(i.ToString(), 0, 0, 0, 0, 0, false));
+                    }
+                }
             }
             catch
             {

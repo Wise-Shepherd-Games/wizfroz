@@ -41,8 +41,18 @@ namespace UI
             winUIRootElement.Q<Button>("HomeBtn").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
             winUIRootElement.Q<Button>("RepeatBtn").clicked += OnRestartClicked;
             winUIRootElement.Q<Button>("RepeatBtn").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
+
             winUIRootElement.Q<Button>("NextBtn").clicked += OnNextClicked;
-            winUIRootElement.Q<Button>("NextBtn").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
+
+            if (int.Parse(SceneManager.GetActiveScene().name) + 1 == LevelsInfo.Levels.Count)
+            {
+                winUIRootElement.Q<Button>("NextBtn").SetEnabled(false);
+            }
+            else
+            {
+                winUIRootElement.Q<Button>("NextBtn").RegisterCallback<MouseOverEvent>(callback => AudioEventManager.PlayUISound(Hover));
+            }
+
             winUIRootElement.style.visibility = Visibility.Hidden;
 
             var manas = FindObjectsOfType<ManaCollectable>().Length;
@@ -188,7 +198,7 @@ namespace UI
             else if (LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime > Mathf.FloorToInt(time))
                 LevelsInfo.Levels[LevelsInfo.CurrentLevel].PlayersBestTime = Mathf.FloorToInt(time);
 
-            if ((LevelsInfo.CurrentLevel + 1) * 10 >= Mathf.FloorToInt(time))
+            if ((LevelsInfo.CurrentLevel + 1) * 5 >= Mathf.FloorToInt(time))
             {
                 stars++;
             }

@@ -112,8 +112,10 @@ public class Frog : MonoBehaviour
             jumpParticle.Stop();
             this.transform.SetParent(LandedPlanet.transform, true);
 
-            Vector3 direction = (transform.position - LandedPlanet.transform.position).normalized;
-            transform.rotation = Quaternion.FromToRotation(Vector3.up, direction);
+            Vector3 direction = LandedPlanet.transform.position - transform.position;
+            Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction) * Quaternion.Euler(0f, 0f, 180f);
+            transform.rotation = targetRotation;
+
         }
 
         if ((other.gameObject.tag == "Obstacle" || other.gameObject.tag == "Enemy") && IsInvisible == false && Won == false)

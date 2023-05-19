@@ -63,6 +63,7 @@ public class AudioManager : MonoBehaviour
             audioClip = ReturnMusicForScene(sceneName);
         }
 
+        if (audioClip.name == musicSource.clip.name) return;
         StartCoroutine(StartFade(this.musicSource, audioClip, baseFade, 0));
     }
 
@@ -101,7 +102,7 @@ public class AudioManager : MonoBehaviour
                 case "SelectLevel":
                     return SelectLevelMusic;
                 default:
-                    return null;
+                    return LevelsMusic[0];
             }
         }
 
@@ -111,7 +112,7 @@ public class AudioManager : MonoBehaviour
         }
         catch
         {
-            return null;
+            return LevelsMusic[0];
         }
     }
 

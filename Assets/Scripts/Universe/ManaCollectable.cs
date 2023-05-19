@@ -8,8 +8,10 @@ public class ManaCollectable : Collectable
     public override void ActOnEnter(Frog f)
     {
         particle.Play();
-        if (f.Mana > f.MaxMana) return;
-        f.Mana += ManaGivenOnCollision;
+        if (f.Mana == f.MaxMana) return;
+        var currentMana = f.Mana + ManaGivenOnCollision;
+        if (currentMana > f.MaxMana) f.Mana = f.MaxMana;
+        else f.Mana = currentMana;
         UIEventManager.UpdateManaBarUI(f.Mana);
         UIEventManager.GotCollectableToUI("mana");
     }
