@@ -85,7 +85,7 @@ public class Menu : MonoBehaviour
 
     private void HandleExitButtonClick()
     {
-        Debug.Log("Exit");
+        Application.Quit();
     }
 
     private void SetOptionsMenuEvents()

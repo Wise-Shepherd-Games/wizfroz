@@ -59,6 +59,7 @@ public class Frog : MonoBehaviour
     Planet LastPlanet = null;
     public bool Won = false;
     public bool Died = false;
+    public bool started = false;
 
     private void Awake()
     {
@@ -210,6 +211,10 @@ public class Frog : MonoBehaviour
     private void OnJump(InputAction.CallbackContext ctx)
     {
         if (this.Won || this.Died) return;
+
+        if (started == true && LandedPlanet == null) return;
+
+        if (started == false) started = true;
 
         jumpAndDeathAudioSource.clip = FrogSounds[Random.Range(0, FrogSounds.Count)];
         jumpAndDeathAudioSource.Play();
