@@ -30,6 +30,7 @@ public class Frog : MonoBehaviour
     public InputAction CastInvisibleSpellAction;
     public InputAction CastChangePlanetDirectionAction;
     public InputAction CastSlowDownPlanetSpellAction;
+    public InputAction QuickRestart;
 
     [Space(20)]
     [Header("Components")]
@@ -56,7 +57,6 @@ public class Frog : MonoBehaviour
     public bool IsInvisible = false;
     public List<Spell> Spells;
     public Planet LandedPlanet = null;
-    Planet LastPlanet = null;
     public bool Won = false;
     public bool Died = false;
     public bool started = false;
@@ -70,6 +70,7 @@ public class Frog : MonoBehaviour
         CastInvisibleSpellAction.performed += OnCastInvisibleSpell;
         CastChangePlanetDirectionAction.performed += OnCastMovePlanetSpell;
         CastSlowDownPlanetSpellAction.performed += OnCastSlowDownPlanetSpell;
+        QuickRestart.performed += delegate { CancelInvoke("DieLostInSpace"); Die("Decided to die?"); };
     }
 
     private void OnEnable()
@@ -78,6 +79,7 @@ public class Frog : MonoBehaviour
         CastInvisibleSpellAction.Enable();
         CastChangePlanetDirectionAction.Enable();
         CastSlowDownPlanetSpellAction.Enable();
+        QuickRestart.Enable();
     }
 
     private void OnDisable()
@@ -86,6 +88,7 @@ public class Frog : MonoBehaviour
         CastInvisibleSpellAction.Disable();
         CastChangePlanetDirectionAction.Disable();
         CastSlowDownPlanetSpellAction.Disable();
+        QuickRestart.Disable();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -101,12 +104,6 @@ public class Frog : MonoBehaviour
             {
                 LandedPlanet.StopAllCoroutines();
                 Win();
-            }
-
-            if (LastPlanet != null)
-            {
-                LastPlanet.TryGetComponent<CircleCollider2D>(out var collider2D);
-                collider2D.enabled = true;
             }
 
             jumpParticle.Clear();
@@ -166,12 +163,6 @@ public class Frog : MonoBehaviour
         {
             this.transform.parent = null;
             Invoke("ResetScale", 0.1f);
-
-            planet.TryGetComponent<CircleCollider2D>(out var collider2D);
-            collider2D.enabled = false;
-
-            LastPlanet = planet;
-            LandedPlanet = null;
         }
     }
 
@@ -216,12 +207,14 @@ public class Frog : MonoBehaviour
 
         if (started == false) started = true;
 
+        StartCoroutine(DontHitPlanetAfterExitingIt());
         jumpAndDeathAudioSource.clip = FrogSounds[Random.Range(0, FrogSounds.Count)];
         jumpAndDeathAudioSource.Play();
 
         Invoke("DieLostInSpace", MaxSecondsFloating);
         rigidBody.AddForce(transform.up * JumpForce);
         jumpParticle.Play();
+        LandedPlanet = null;
     }
 
     private void OnCastInvisibleSpell(InputAction.CallbackContext ctx)
@@ -305,5 +298,12 @@ public class Frog : MonoBehaviour
         }
 
         Destroy(gameObject);
+    }
+
+    private IEnumerator DontHitPlanetAfterExitingIt()
+    {
+        this.circleCollider.enabled = false;
+        yield return new WaitForSeconds(0.1f);
+        this.circleCollider.enabled = true;
     }
 }

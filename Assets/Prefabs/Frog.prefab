@@ -5032,6 +5032,23 @@ MonoBehaviour:
       m_Action: Cast Slow Down Planet Spell
       m_Flags: 0
     m_Flags: 0
+  QuickRestart:
+    m_Name: Quick Restart
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 6b1bee7b-61b5-4fd4-a60d-30e0505f45f2
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: fe44d9ba-dace-4d4f-8443-41feafc5e81b
+      m_Path: <Keyboard>/r
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Quick Restart
+      m_Flags: 0
+    m_Flags: 0
   collectableAudioSource: {fileID: -7802172273330088518}
   spellAudioSource: {fileID: -5935248919748108433}
   jumpAndDeathAudioSource: {fileID: -478804756662389554}
@@ -5050,6 +5067,7 @@ MonoBehaviour:
   LandedPlanet: {fileID: 0}
   Won: 0
   Died: 0
+  started: 0
 --- !u!50 &9216478239913388305
 Rigidbody2D:
   serializedVersion: 4
@@ -5084,9 +5102,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.26}
+  m_Offset: {x: -0, y: -0.25}
   serializedVersion: 2
-  m_Radius: 0.31103668
+  m_Radius: 0.34
 --- !u!82 &-7802172273330088518
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5299,7 +5317,7 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
+  MinDistance: 0.99491227
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0

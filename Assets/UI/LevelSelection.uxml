@@ -8,7 +8,7 @@
                 <ui:Label text="to play!" display-tooltip-when-elided="true" name="SelectMessage" class="Labels" style="justify-content: center; margin-bottom: 0; margin-top: 0; font-size: 64px; width: 100%; height: auto;" />
             </ui:VisualElement>
         </ui:GroupBox>
-        <ui:GroupBox style="width: 100%; height: 50%; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; align-items: center; margin-top: 0;">
+        <ui:GroupBox style="width: 100%; height: 70%; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; align-items: center; margin-top: 0;">
             <ui:VisualElement name="LevelContainer" style="flex-direction: row; flex-wrap: wrap;" />
             <ui:VisualElement style="width: 100%; height: 30%; justify-content: flex-start; align-items: center;">
                 <ui:VisualElement style="flex-direction: row; width: 100%; height: 96px; justify-content: center; align-items: center;">
@@ -16,15 +16,11 @@
                     <ui:VisualElement name="Star2" style="background-image: url(&apos;project://database/Assets/Sprites/Misc/Star.png?fileID=2800000&amp;guid=2de474cbad453f443b528103aa2fadb3&amp;type=3#Star&apos;); width: 96px; height: 96px; display: flex; visibility: hidden;" />
                     <ui:VisualElement name="Star3" style="background-image: url(&apos;project://database/Assets/Sprites/Misc/Star.png?fileID=2800000&amp;guid=2de474cbad453f443b528103aa2fadb3&amp;type=3#Star&apos;); width: 96px; height: 96px; display: flex; visibility: hidden;" />
                 </ui:VisualElement>
-                <ui:Label display-tooltip-when-elided="true" name="LevelInfo" text="Click the Level button to play it or pass the mouse over &lt;br&gt; the button to get the current progress!" class="Labels" style="justify-content: flex-start; margin-bottom: 0; margin-top: 0; font-size: 36px; width: 100%; height: 30%; color: rgb(255, 255, 255); padding-bottom: 0;" />
+                <ui:Label display-tooltip-when-elided="true" name="LevelInfo" text="Click the Level button to play it or pass the mouse over &lt;br&gt; the button to get the current progress!" class="Labels" style="justify-content: flex-start; margin-bottom: 0; margin-top: 0; font-size: 26px; width: auto; height: auto; color: rgb(255, 255, 255); padding-bottom: 0; flex-wrap: wrap; overflow: visible;" />
             </ui:VisualElement>
             <ui:VisualElement style="height: 10%;">
                 <ui:Button text="Back" display-tooltip-when-elided="true" name="Back" class="buttons" style="margin-top: 50px; margin-bottom: 30px; width: 140px; height: 85px;" />
             </ui:VisualElement>
         </ui:GroupBox>
-        <ui:VisualElement style="width: 100%; height: 100%; align-items: center; justify-content: center; -unity-text-align: upper-left;">
-            <ui:VisualElement style="width: 220px; height: 90px; background-image: url(&apos;project://database/Assets/UI/Logo.png?fileID=2800000&amp;guid=5e030b8058f87704587a334be42dcb16&amp;type=3#Logo&apos;); -unity-background-image-tint-color: rgba(255, 255, 255, 0.5); margin-bottom: 10px;" />
-            <ui:Label text="Do not consider it as a finished product. &lt;br&gt;Interpret it as a proof of concept or an alpha experience." display-tooltip-when-elided="true" name="Disclaimer" class="Labels" style="justify-content: center; margin-bottom: 0; margin-top: 0; font-size: 16px; width: 100%; height: auto; color: rgba(255, 255, 255, 0.5); padding-bottom: 0;" />
-        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
