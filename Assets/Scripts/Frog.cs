@@ -155,14 +155,13 @@ public class Frog : MonoBehaviour
         {
             Die("Let's try again!");
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
         if (other.gameObject.TryGetComponent<Planet>(out Planet planet))
         {
-            this.transform.parent = null;
-            Invoke("ResetScale", 0.1f);
+            if (planet != LandedPlanet)
+            {
+                LandedPlanet = planet;
+            }
         }
     }
 
@@ -215,6 +214,8 @@ public class Frog : MonoBehaviour
         rigidBody.AddForce(transform.up * JumpForce);
         jumpParticle.Play();
         LandedPlanet = null;
+        this.transform.parent = null;
+        ResetScale();
     }
 
     private void OnCastInvisibleSpell(InputAction.CallbackContext ctx)
